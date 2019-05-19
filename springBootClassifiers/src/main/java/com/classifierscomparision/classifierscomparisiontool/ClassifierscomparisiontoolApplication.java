@@ -15,27 +15,27 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-@CrossOrigin(origins = "http://localhost:4200")
+//@CrossOrigin(origins = "http://localhost:4200")
 @SpringBootApplication
-@RestController
+//@RestController
 public class ClassifierscomparisiontoolApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(ClassifierscomparisiontoolApplication.class, args);
     }
 
-    @RequestMapping(value="/upload", method= RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Object> uploadFile (@RequestParam("file") MultipartFile file) {
-        try {
-            byte[] bytes = file.getBytes();
-            Path path = Paths.get("/home/kaja/Pulpit/PracaMagisterska/testFileUpload/" + file.getOriginalFilename());
-            Files.write(path, bytes);
-
-        }catch (IOException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
-        Double result = 3.14567789;
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
+//    @RequestMapping(value="/upload", method= RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+//    public ResponseEntity<Object> uploadFile (@RequestParam("file") MultipartFile file) {
+//        try {
+//            byte[] bytes = file.getBytes();
+//            Path path = Paths.get("/home/kaja/Pulpit/PracaMagisterska/testFileUpload/" + file.getOriginalFilename());
+//            Files.write(path, bytes);
+//
+//        }catch (IOException e) {
+//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//        }
+//
+//        Double result = 3.14567789;
+//        return new ResponseEntity<>(result, HttpStatus.OK);
+//    }
 }
