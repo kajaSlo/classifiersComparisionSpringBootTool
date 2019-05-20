@@ -1,7 +1,9 @@
 package com.classifierscomparision.classifierscomparisiontool.controllers;
 
 import com.classifierscomparision.classifierscomparisiontool.models.Dataset;
+import com.classifierscomparision.classifierscomparisiontool.models.Method;
 import com.classifierscomparision.classifierscomparisiontool.services.DatasetService;
+import com.classifierscomparision.classifierscomparisiontool.services.MethodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,6 +27,21 @@ public class DatasetController {
     @Autowired
     private DatasetService datasetService;
 
+    @Autowired
+    private MethodService methodService;
+
+    @PostMapping("/{dataset_id}")
+    public ResponseEntity<?> addMethodToDataset(@Valid @RequestBody Method method, BindingResult result, @PathVariable Long dataset_id){
+
+        if(result.hasErrors()){
+            return new ResponseEntity<String>("Invalid Method Object", HttpStatus.BAD_REQUEST);
+        }
+
+        Method newMethod = methodService.addMethod(dataset_id, method);
+
+        return new ResponseEntity<Method>(newMethod,HttpStatus.CREATED);
+    }
+
     @PostMapping("/addDataset")
     public ResponseEntity<?> addNewDataset(@Valid @RequestBody Dataset dataset, BindingResult result){
 
@@ -36,15 +53,15 @@ public class DatasetController {
     }
 
 
-    @GetMapping("/{datasetId}")
-    public ResponseEntity<?> getDatasetById(@PathVariable Long datasetId){
+    @GetMapping("/{dataset_id}")
+    public ResponseEntity<?> getDatasetById(@PathVariable Long dataset_id){
 
-        Optional<Dataset> dataset = datasetService.findDatasetById(datasetId);
+        Optional<Dataset> dataset = datasetService.findDatasetById(dataset_id);
 
         if(dataset.isPresent()){
             return new ResponseEntity<Dataset>(dataset.get(), HttpStatus.OK);
         }else{
-            return new ResponseEntity<String>("Dataset with id: " + datasetId + " doesn't exist", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<String>("Dataset with id: " + dataset_id + " doesn't exist", HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -53,11 +70,11 @@ public class DatasetController {
         return datasetService.findAllDatasets();
     }
 
-    @DeleteMapping("/{datasetId}")
-    public ResponseEntity<?> deleteDataset(@PathVariable Long datasetId){
-        datasetService.deleteDatasetById(datasetId);
+    @DeleteMapping("/{dataset_id}")
+    public ResponseEntity<?> deleteDataset(@PathVariable Long dataset_id){
+        datasetService.deleteDatasetById(dataset_id);
 
-        return new ResponseEntity<String>("Dataset with id: " + datasetId + "deleted succesfully", HttpStatus.OK);
+        return new ResponseEntity<String>("Dataset with id: " + dataset_id + "deleted succesfully", HttpStatus.OK);
     }
 
 
@@ -73,6 +90,10 @@ public class DatasetController {
         }
 
         Double result = 3.14567789;
+
+
+        Dataset dataset = new Dataset(file.getOriginalFilename());
+        Dataset newDataset = datasetService.saveOrUpdateDataset(dataset);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }
