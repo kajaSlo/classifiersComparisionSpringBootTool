@@ -32,4 +32,8 @@ public class MethodService {
         }
         //set method to dataset
     }
+
+    public Iterable<Method> findDatasetById(Long id){
+        return methodRepository.findAllByDataset_IdOrderByResultDesc(id);
+    }
 }

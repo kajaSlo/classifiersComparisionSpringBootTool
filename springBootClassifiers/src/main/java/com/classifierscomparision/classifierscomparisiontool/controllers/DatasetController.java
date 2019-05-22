@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:4200")
@@ -41,6 +42,14 @@ public class DatasetController {
 
         return new ResponseEntity<Method>(newMethod,HttpStatus.CREATED);
     }
+
+    @GetMapping("/methods/{dataset_id}")
+    public Iterable<Method> getDatasetMethods(@PathVariable Long dataset_id){
+
+
+        return methodService.findDatasetById(dataset_id);
+    }
+
 
     @PostMapping("/addDataset")
     public ResponseEntity<?> addNewDataset(@Valid @RequestBody Dataset dataset, BindingResult result){
