@@ -4,6 +4,7 @@ import com.classifierscomparision.classifierscomparisiontool.models.Dataset;
 import com.classifierscomparision.classifierscomparisiontool.models.Method;
 import com.classifierscomparision.classifierscomparisiontool.services.DatasetService;
 import com.classifierscomparision.classifierscomparisiontool.services.MethodService;
+import com.classifierscomparision.classifierscomparisiontool.services.MethodSupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,6 +18,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,8 +31,8 @@ public class DatasetController {
     private DatasetService datasetService;
 
     @Autowired
-    private MethodService methodService;
-    
+    private MethodSupplierService methodSupplier;
+
 
     @PostMapping("/addDataset")
     public ResponseEntity<?> addNewDataset(@Valid @RequestBody Dataset dataset, BindingResult result){
@@ -83,7 +85,15 @@ public class DatasetController {
 
 
         Dataset dataset = new Dataset(file.getOriginalFilename());
+
         Dataset newDataset = datasetService.saveOrUpdateDataset(dataset);
+
+        Long uploadedDatasetId = newDataset.getId();
+
+
+        methodSupplier.addMethodsForDataset(uploadedDatasetId);
+
+
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }
