@@ -30,26 +30,7 @@ public class DatasetController {
 
     @Autowired
     private MethodService methodService;
-
-    @PostMapping("/{dataset_id}")
-    public ResponseEntity<?> addMethodToDataset(@Valid @RequestBody Method method, BindingResult result, @PathVariable Long dataset_id){
-
-        if(result.hasErrors()){
-            return new ResponseEntity<String>("Invalid Method Object", HttpStatus.BAD_REQUEST);
-        }
-
-        Method newMethod = methodService.addMethod(dataset_id, method);
-
-        return new ResponseEntity<Method>(newMethod,HttpStatus.CREATED);
-    }
-
-    @GetMapping("/methods/{dataset_id}")
-    public Iterable<Method> getDatasetMethods(@PathVariable Long dataset_id){
-
-
-        return methodService.findDatasetById(dataset_id);
-    }
-
+    
 
     @PostMapping("/addDataset")
     public ResponseEntity<?> addNewDataset(@Valid @RequestBody Dataset dataset, BindingResult result){

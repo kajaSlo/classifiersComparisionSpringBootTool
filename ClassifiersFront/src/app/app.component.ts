@@ -4,7 +4,7 @@ import {
   FileSelectDirective
 } from "ng2-file-upload/ng2-file-upload";
 
-const URL = "http://localhost:8080/upload";
+const URL = "http://localhost:8080/api/dataset/upload";
 
 @Component({
   selector: "app-root",
