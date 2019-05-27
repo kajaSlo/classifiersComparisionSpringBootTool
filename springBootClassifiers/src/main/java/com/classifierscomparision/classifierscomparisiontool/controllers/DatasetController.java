@@ -21,6 +21,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.io.File;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -71,29 +72,29 @@ public class DatasetController {
 
 
     @RequestMapping(value="/upload", method= RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Object> uploadFile (@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<Object> uploadFile (@RequestParam("file") MultipartFile file) throws InterruptedException{
         try {
             byte[] bytes = file.getBytes();
-            Path path = Paths.get("/home/kaja/Pulpit/PracaMagisterska/testFileUpload/" + file.getOriginalFilename());
+            Path path = Paths.get("/home/kaja/Pulpit/PracaMagisterska/classifiersSpringBootApp/datasets/CSVDatasets/" + file.getOriginalFilename());
             Files.write(path, bytes);
+
+            //Double result = 3.14567789;
+
+
+            Dataset dataset = new Dataset(file.getOriginalFilename());
+
+            Dataset newDataset = datasetService.saveOrUpdateDataset(dataset);
+
+            Long uploadedDatasetId = newDataset.getId();
+
+
+            List<Method> results = methodSupplier.addMethodsForDataset(uploadedDatasetId, file.getOriginalFilename());
+
+
+            return new ResponseEntity<>(uploadedDatasetId, HttpStatus.OK);
 
         }catch (IOException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
-        Double result = 3.14567789;
-
-
-        Dataset dataset = new Dataset(file.getOriginalFilename());
-
-        Dataset newDataset = datasetService.saveOrUpdateDataset(dataset);
-
-        Long uploadedDatasetId = newDataset.getId();
-
-
-        methodSupplier.addMethodsForDataset(uploadedDatasetId);
-
-
-        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }
