@@ -59,7 +59,6 @@ public class DTCassifier extends Thread implements DefaultDataSupplier{
             J48 model = buildmodel(dataset);
             model.buildClassifier(dataset);
 
-
             makeEvaluation(dataset, model);
             System.out.println("\n");
 

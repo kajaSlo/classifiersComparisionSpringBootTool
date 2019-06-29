@@ -75,7 +75,10 @@ public class DatasetController {
     public ResponseEntity<Object> uploadFile (@RequestParam("file") MultipartFile file) throws InterruptedException{
         try {
             byte[] bytes = file.getBytes();
-            Path path = Paths.get("/home/kaja/Pulpit/PracaMagisterska/classifiersSpringBootApp/datasets/CSVDatasets/" + file.getOriginalFilename());
+
+            String projectDir = new File(System.getProperty("user.dir")).getParentFile().toString();
+            Path path = Paths.get(projectDir + "/datasets/CSVDatasets/" + file.getOriginalFilename());
+//            Path path = Paths.get("/home/kaja/Pulpit/PracaMagisterska/classifiersSpringBootApp/datasets/CSVDatasets/" + file.getOriginalFilename());
             Files.write(path, bytes);
 
             //Double result = 3.14567789;
@@ -98,3 +101,4 @@ public class DatasetController {
         }
     }
 }
+

@@ -1,5 +1,6 @@
 package com.classifierscomparision.classifierscomparisiontool.services;
 
+
 import com.classifierscomparision.classifierscomparisiontool.exceptions.DatasetIdException;
 import com.classifierscomparision.classifierscomparisiontool.models.Dataset;
 import com.classifierscomparision.classifierscomparisiontool.models.Method;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class MethodService {
+public class SplitResultsService {
 
     @Autowired
     private DatasetRepository datasetRepository;
@@ -20,28 +21,19 @@ public class MethodService {
     @Autowired
     private MethodRepository methodRepository;
 
-    public Method addMethod(Long id, Method method){
-
-        Optional<Dataset> dataset = datasetRepository.findById(id);
-
-        if(dataset.isPresent()){
-            method.setDataset(dataset.get());
-            return methodRepository.save(method);
-        }else{
-
-            throw new DatasetIdException("Dataset with id: "  + id + "doesn't exist");
-        }
-        //set method to dataset
-    }
 
     public Iterable<Method> findDatasetById(Long id){
         return methodRepository.findAllByDataset_IdOrderByResultDesc(id);
     }
 
-//    public Iterable<Method> findMethodsWithCrossValidationByDatasetid(Long id){
+
+//    public Iterable<Method> findMethodsWithCrossValidationUsedByDatasetId(Long id){
 //
-//        List<Method> methodsWithAllResults = methodRepository.findAllByDataset_IdOrderByResultDesc(id);
+//        Iterable<Method> allMethodsByDatasetId = methodRepository.findAllByDataset_IdOrderByResultDesc(id);
+//
+//        ((List<Method>) allMethodsByDatasetId).stream()
+//
+//                //sprawdzic czy metoda findByyMethod_IdAndSplitNameEquals cos zwroci, jesli nie bedzie to pusyu optional to do zwwracanej listy dodac metode z allMethodsByDatasetId, dla ktorej w polu splitName w tabeli SplitResults bylo pole rowne cerossvalidation
 //
 //    }
-
 }

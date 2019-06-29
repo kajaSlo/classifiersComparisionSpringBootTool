@@ -3,6 +3,8 @@ package com.classifierscomparision.classifierscomparisiontool.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Method {
@@ -21,6 +23,11 @@ public class Method {
     @JoinColumn(name="dataset_id", updatable = false, nullable = false)
     @JsonIgnore
     private Dataset dataset;
+
+    //OneToMany with SplitResults
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "method")
+    private List<SplitResults> splitResults= new ArrayList<>();
+
 
     public Method() {
     }
@@ -55,5 +62,13 @@ public class Method {
 
     public void setDataset(Dataset dataset) {
         this.dataset = dataset;
+    }
+
+    public List<SplitResults> getSplitResults() {
+        return splitResults;
+    }
+
+    public void setSplitResults(List<SplitResults> splitResults) {
+        this.splitResults = splitResults;
     }
 }
