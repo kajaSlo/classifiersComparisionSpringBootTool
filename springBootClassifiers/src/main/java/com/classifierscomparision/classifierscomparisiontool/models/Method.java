@@ -17,17 +17,18 @@ public class Method {
 
     private Double result;
 
+    private String splitName;
+    private double F1Score;
+    private double accuracy;
+    private double sensivity;
+    private double specificity;
+
     //ManyToOne with Dataset
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
     @JoinColumn(name="dataset_id", updatable = false, nullable = false)
     @JsonIgnore
     private Dataset dataset;
-
-    //OneToMany with SplitResults
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "method")
-    private List<SplitResults> splitResults= new ArrayList<>();
-
 
     public Method() {
     }
@@ -64,11 +65,44 @@ public class Method {
         this.dataset = dataset;
     }
 
-    public List<SplitResults> getSplitResults() {
-        return splitResults;
+    public String getSplitName() {
+        return splitName;
     }
 
-    public void setSplitResults(List<SplitResults> splitResults) {
-        this.splitResults = splitResults;
+    public void setSplitName(String splitName) {
+        this.splitName = splitName;
     }
+
+    public double getF1Score() {
+        return F1Score;
+    }
+
+    public void setF1Score(double f1Score) {
+        F1Score = f1Score;
+    }
+
+    public double getAccuracy() {
+        return accuracy;
+    }
+
+    public void setAccuracy(double accuracy) {
+        this.accuracy = accuracy;
+    }
+
+    public double getSensivity() {
+        return sensivity;
+    }
+
+    public void setSensivity(double sensivity) {
+        this.sensivity = sensivity;
+    }
+
+    public double getSpecificity() {
+        return specificity;
+    }
+
+    public void setSpecificity(double specificity) {
+        this.specificity = specificity;
+    }
+
 }

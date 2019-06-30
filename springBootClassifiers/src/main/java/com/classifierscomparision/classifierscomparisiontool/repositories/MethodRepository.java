@@ -9,13 +9,8 @@ import java.util.List;
 @Repository
 public interface MethodRepository extends CrudRepository<Method,Long>{
 
-    //List<Method> findByIdOrderByResult(Long id);
-
     List<Method> findAllByDataset_IdOrderByResultDesc(Long id);
 
-//    List<Method> findAllByDataset_IdAndSplitResultsF1Sco
-//
-//    splitName
-//
-//            accuracy
+    List<Method> findAllByDataset_IdAndSplitNameEqualsOrderByResultDesc(Long id,String splitName);
+
 }

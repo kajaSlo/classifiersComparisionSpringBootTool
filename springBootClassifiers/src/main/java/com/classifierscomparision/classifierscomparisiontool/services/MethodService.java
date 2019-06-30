@@ -44,4 +44,12 @@ public class MethodService {
 //
 //    }
 
+    public Iterable<Method> findCrossValidationMethodsByDatasetId(Long id){
+        return methodRepository.findAllByDataset_IdAndSplitNameEqualsOrderByResultDesc(id, "CrossValidation");
+    }
+
+    public Iterable<Method> findBaggingMethodsByDatasetId(Long id){
+        return methodRepository.findAllByDataset_IdAndSplitNameEqualsOrderByResultDesc(id, "Bagging");
+    }
+
 }

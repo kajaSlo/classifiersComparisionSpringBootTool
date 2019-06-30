@@ -1,10 +1,10 @@
 package com.classifierscomparision.classifierscomparisiontool.services;
 
-import com.classifierscomparision.classifierscomparisiontool.classifiers.DTCassifier;
-import com.classifierscomparision.classifierscomparisiontool.classifiers.SVMLibSVM;
+import com.classifierscomparision.classifierscomparisiontool.classifiers.bagging.DTBagging;
+import com.classifierscomparision.classifierscomparisiontool.classifiers.bagging.SVMBagging;
 import com.classifierscomparision.classifierscomparisiontool.classifiers.crossValidation.DTCrossValidation;
+import com.classifierscomparision.classifierscomparisiontool.classifiers.crossValidation.SVMCrossValidation;
 import com.classifierscomparision.classifierscomparisiontool.models.Method;
-import com.classifierscomparision.classifierscomparisiontool.models.SplitResults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -81,23 +81,6 @@ public class MethodSupplierService {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public List<Method> addMethodsForDataset(Long dataset_id, String fileName) throws InterruptedException {
 
 
@@ -107,27 +90,57 @@ public class MethodSupplierService {
 
 
 
-        DTCrossValidation decisionTreeClassifier = new DTCrossValidation(projectDir + "/datasets/CSVDatasets/" + fileName);
-        threads.add(decisionTreeClassifier);
+        DTCrossValidation decisionTreeClassifierCrossValidation = new DTCrossValidation(projectDir + "/datasets/CSVDatasets/" + fileName);
+        threads.add(decisionTreeClassifierCrossValidation);
+
+        DTBagging decisionTreeClassifierBagging = new DTBagging(projectDir + "/datasets/CSVDatasets/" + fileName);
+        threads.add(decisionTreeClassifierBagging);
+
 
 //        SVMLibSVM svmClassifier = new SVMLibSVM(projectDir + "/datasets/CSVDatasets/" + fileName);
 //        threads.add(svmClassifier);
+
+        SVMCrossValidation svmCrossValidation = new SVMCrossValidation(projectDir + "/datasets/CSVDatasets/" + fileName);
+        threads.add(svmCrossValidation);
+
+        SVMBagging svmClassifierBagging = new SVMBagging(projectDir + "/datasets/CSVDatasets/" + fileName);
+        threads.add(svmClassifierBagging);
 
         for (Thread thread : threads) {
             thread.start();
             thread.join();
         }
 
-       // List<Double> splitResultsCrossValidation = decisionTreeClassifier.getResults();
+        Double F1scoreDTCrossValidation = decisionTreeClassifierCrossValidation.getF1Score();
+        Double AccuracyDTCrossValidation = decisionTreeClassifierCrossValidation.getAccuracy();
+        Double SensivityDTCrossValidation = decisionTreeClassifierCrossValidation.getSensivity();
+        Double SpecificityDTCrossValidation = decisionTreeClassifierCrossValidation.getSpecificity();
+
+       Double weightedResultDTCrossValidation = (F1scoreDTCrossValidation + AccuracyDTCrossValidation + SensivityDTCrossValidation + SpecificityDTCrossValidation)/4;
 
 
+        Double F1scoreDTBagging= decisionTreeClassifierBagging.getF1Score();
+        Double AccuracyDTBagging = decisionTreeClassifierBagging.getAccuracy();
+        Double SensivityDTBagging = decisionTreeClassifierBagging.getSensivity();
+        Double SpecificityDTBagging = decisionTreeClassifierBagging.getSpecificity();
 
-        Double F1score = decisionTreeClassifier.getF1Score();
-        Double Accuracy = decisionTreeClassifier.getAccuracy();
-        Double Sensivity = decisionTreeClassifier.getSensivity();
-        Double Specificity = decisionTreeClassifier.getSpecificity();
-//
-//        Double weightedResult = (F1score + Accuracy + Sensivity + Specificity)/4;
+        Double weightedResultDTBagging = (F1scoreDTBagging + AccuracyDTBagging + SensivityDTBagging + SpecificityDTBagging)/4;
+
+
+        Double F1scoreSVMCrossValidation = svmCrossValidation.getF1Score();
+        Double AccuracySVMCrossValidation = svmCrossValidation.getAccuracy();
+        Double SensivitySVMCrossValidation = svmCrossValidation.getSensivity();
+        Double SpecificitySVMCrossValidation = svmCrossValidation.getSpecificity();
+
+        Double weightedResultSVMCrossValidation = (F1scoreSVMCrossValidation + AccuracySVMCrossValidation + SensivitySVMCrossValidation + SpecificitySVMCrossValidation)/4;
+
+
+        Double F1scoreSVMBagging= svmClassifierBagging.getF1Score();
+        Double AccuracySVMBagging = svmClassifierBagging.getAccuracy();
+        Double SensivitySVMBagging = svmClassifierBagging.getSensivity();
+        Double SpecificitySVMBagging = svmClassifierBagging.getSpecificity();
+
+        Double weightedResultSVMBagging = (F1scoreSVMBagging + AccuracySVMBagging + SensivitySVMBagging + SpecificitySVMBagging)/4;
 
         System.out.println("AAAAAAAA");
 
@@ -138,38 +151,71 @@ public class MethodSupplierService {
 //        System.out.println("BBBBBB: " + value1);
 
 
-        Method decisionTreeMethod = new Method();
+        Method decisionTreeMethodCrossValidation = new Method();
 
-        decisionTreeMethod.setMethodName("Decision tree");
+        decisionTreeMethodCrossValidation.setMethodName("Decision tree");
 
 
-        decisionTreeMethod.setResult(0.999);
+        decisionTreeMethodCrossValidation.setResult(weightedResultDTCrossValidation);
+        decisionTreeMethodCrossValidation.setSplitName("CrossValidation");
+        decisionTreeMethodCrossValidation.setF1Score(F1scoreDTCrossValidation);
+        decisionTreeMethodCrossValidation.setAccuracy(AccuracyDTCrossValidation);
+        decisionTreeMethodCrossValidation.setSensivity(SensivityDTCrossValidation);
+        decisionTreeMethodCrossValidation.setSpecificity(SpecificityDTCrossValidation);
 
-        List<SplitResults> decisionTreeAllSplitResults = new LinkedList<>();
-        SplitResults crossValidationSplit = new SplitResults();
-        crossValidationSplit.setSplitName("CrossValidation");
-        crossValidationSplit.setMethod(decisionTreeMethod);
-        crossValidationSplit.setF1Score(F1score);
-        crossValidationSplit.setAccuracy(Accuracy);
-        crossValidationSplit.setSensivity(Sensivity);
-        crossValidationSplit.setSpecificity(Specificity);
 
-        decisionTreeAllSplitResults.add(crossValidationSplit);
+        Method decisionTreeMethodBagging = new Method();
 
-        decisionTreeMethod.setSplitResults(decisionTreeAllSplitResults);
+        decisionTreeMethodBagging.setMethodName("Decision tree");
 
-//        Method SVMMethod = new Method();
-//        SVMMethod.setMethodName("SVM");
-//        SVMMethod.setResult(value1);
 
-        Method DTMethod = methodService.addMethod(dataset_id, decisionTreeMethod);
+        decisionTreeMethodBagging.setResult(weightedResultDTBagging);
+        decisionTreeMethodBagging.setSplitName("Bagging");
+        decisionTreeMethodBagging.setF1Score(F1scoreDTBagging);
+        decisionTreeMethodBagging.setAccuracy(AccuracyDTBagging);
+        decisionTreeMethodBagging.setSensivity(SensivityDTBagging);
+        decisionTreeMethodBagging.setSpecificity(SpecificityDTBagging);
+
+
+        Method SVMMethodCrossValidation = new Method();
+
+        SVMMethodCrossValidation.setMethodName("SVM");
+        SVMMethodCrossValidation.setResult(weightedResultSVMCrossValidation);
+        SVMMethodCrossValidation.setSplitName("CrossValidation");
+        SVMMethodCrossValidation.setF1Score(F1scoreSVMCrossValidation);
+        SVMMethodCrossValidation.setAccuracy(AccuracySVMCrossValidation);
+        SVMMethodCrossValidation.setSensivity(SensivitySVMCrossValidation);
+        SVMMethodCrossValidation.setSpecificity(SpecificitySVMCrossValidation);
+
+        Method SVMMethodBagging = new Method();
+
+        SVMMethodBagging.setMethodName("SVM");
+        SVMMethodBagging.setResult(weightedResultSVMBagging);
+        SVMMethodBagging.setSplitName("Bagging");
+        SVMMethodBagging.setF1Score(F1scoreSVMBagging);
+        SVMMethodBagging.setAccuracy(AccuracySVMBagging);
+        SVMMethodBagging.setSensivity(SensivitySVMBagging);
+        SVMMethodBagging.setSpecificity(SpecificitySVMBagging);
+
+
+
+        Method DTMethodCrossVal = methodService.addMethod(dataset_id, decisionTreeMethodCrossValidation);
+
+        Method DTMethodBagging = methodService.addMethod(dataset_id, decisionTreeMethodBagging);
+
+        Method svmMethodCrossVal = methodService.addMethod(dataset_id, SVMMethodCrossValidation);
+
+        Method svmMethodBagging = methodService.addMethod(dataset_id, SVMMethodBagging);
 
        // Method sVMMethod = methodService.addMethod(dataset_id, SVMMethod);
 
 
 
         List<Method> methodsList = new ArrayList<>();
-        methodsList.add(DTMethod);
+        methodsList.add(DTMethodCrossVal);
+        methodsList.add(DTMethodBagging);
+        methodsList.add(svmMethodCrossVal);
+        methodsList.add(svmMethodBagging);
     //    methodsList.add(SVMMethod);
         return methodsList;
 

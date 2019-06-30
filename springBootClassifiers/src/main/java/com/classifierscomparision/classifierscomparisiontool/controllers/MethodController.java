@@ -43,4 +43,18 @@ public class MethodController {
 
         return methodService.findDatasetById(dataset_id);
     }
+
+    @GetMapping("/methods/crossValidation/{dataset_id}")
+    public Iterable<Method> getDatasetMethodsCrossValidationSplit(@PathVariable Long dataset_id){
+
+        return methodService.findCrossValidationMethodsByDatasetId(dataset_id);
+    }
+
+    @GetMapping("/methods/bagging/{dataset_id}")
+    public Iterable<Method> getDatasetMethodsBaggingSplit(@PathVariable Long dataset_id){
+
+        return methodService.findBaggingMethodsByDatasetId(dataset_id);
+    }
+
+
 }
