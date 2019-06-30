@@ -87,7 +87,7 @@ public class DatasetController {
             Long uploadedDatasetId = newDataset.getId();
 
 
-            List<Method> results = methodSupplier.addMethodsForDataset(uploadedDatasetId, file.getOriginalFilename());
+            methodSupplier.addMethodsForDataset(uploadedDatasetId, file.getOriginalFilename());
 
 
             return new ResponseEntity<>(uploadedDatasetId, HttpStatus.OK);

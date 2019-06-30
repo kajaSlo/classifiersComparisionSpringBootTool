@@ -81,7 +81,7 @@ public class MethodSupplierService {
 
 
 
-    public List<Method> addMethodsForDataset(Long dataset_id, String fileName) throws InterruptedException {
+    public void addMethodsForDataset(Long dataset_id, String fileName) throws InterruptedException {
 
 
         String projectDir = new File(System.getProperty("user.dir")).getParentFile().toString();
@@ -95,10 +95,6 @@ public class MethodSupplierService {
 
         DTBagging decisionTreeClassifierBagging = new DTBagging(projectDir + "/datasets/CSVDatasets/" + fileName);
         threads.add(decisionTreeClassifierBagging);
-
-
-//        SVMLibSVM svmClassifier = new SVMLibSVM(projectDir + "/datasets/CSVDatasets/" + fileName);
-//        threads.add(svmClassifier);
 
         SVMCrossValidation svmCrossValidation = new SVMCrossValidation(projectDir + "/datasets/CSVDatasets/" + fileName);
         threads.add(svmCrossValidation);
@@ -141,14 +137,6 @@ public class MethodSupplierService {
         Double SpecificitySVMBagging = svmClassifierBagging.getSpecificity();
 
         Double weightedResultSVMBagging = (F1scoreSVMBagging + AccuracySVMBagging + SensivitySVMBagging + SpecificitySVMBagging)/4;
-
-        System.out.println("AAAAAAAA");
-
-      ///  splitResultsCrossValidation.stream().forEach(System.out::println);
-
-
-//        double value1 = svmClassifier.getResult();
-//        System.out.println("BBBBBB: " + value1);
 
 
         Method decisionTreeMethodCrossValidation = new Method();
@@ -207,21 +195,7 @@ public class MethodSupplierService {
 
         Method svmMethodBagging = methodService.addMethod(dataset_id, SVMMethodBagging);
 
-       // Method sVMMethod = methodService.addMethod(dataset_id, SVMMethod);
-
-
-
-        List<Method> methodsList = new ArrayList<>();
-        methodsList.add(DTMethodCrossVal);
-        methodsList.add(DTMethodBagging);
-        methodsList.add(svmMethodCrossVal);
-        methodsList.add(svmMethodBagging);
-    //    methodsList.add(SVMMethod);
-        return methodsList;
 
     }
-
-
-
 
 }
