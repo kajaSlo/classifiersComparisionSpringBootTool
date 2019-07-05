@@ -62,9 +62,6 @@ public class KNNBagging extends Thread implements DefaultDataSupplier {
         try {
             Instances dataset = getDataset(datasetDirectory);
 
-            System.out.println("Inside LibSVM classifier");
-
-
             dataset.setClassIndex(dataset.numAttributes()-1);
 
             Bagging bagger = new Bagging();

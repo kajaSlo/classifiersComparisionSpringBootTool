@@ -35,8 +35,6 @@ public class SVMCrossValidation extends Thread implements DefaultDataSupplier {
         Double sensivity = evaluation.weightedRecall();
         Double specificity = evaluation.weightedTrueNegativeRate();
 
-        Double weightedResult = (F1Score + accuracy + sensivity + specificity)/4;
-
         this.F1score=F1Score;
         this.Accuracy=accuracy;
         this.Sensivity=sensivity;

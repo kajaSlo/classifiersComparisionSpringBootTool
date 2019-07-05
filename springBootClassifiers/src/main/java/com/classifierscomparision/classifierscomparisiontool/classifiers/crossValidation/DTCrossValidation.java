@@ -40,14 +40,6 @@ public class DTCrossValidation extends Thread implements DefaultDataSupplier {
         Double sensivity = evaluation.weightedRecall();
         Double specificity = evaluation.weightedTrueNegativeRate();
 
-        //Double weightedResult = (F1Score + accuracy + sensivity + specificity)/4;
-       // this.result = weightedResult;
-
-//        this.results.add(F1Score);
-//        this.results.add(accuracy);
-//        this.results.add(sensivity);
-//        this.results.add(specificity);
-
         this.F1score=F1Score;
         this.Accuracy=accuracy;
         this.Sensivity=sensivity;

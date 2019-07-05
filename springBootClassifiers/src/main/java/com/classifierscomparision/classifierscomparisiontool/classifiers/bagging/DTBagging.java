@@ -70,8 +70,6 @@ public class DTBagging extends Thread implements DefaultDataSupplier {
 
         try {
 
-            System.out.println("Inside Decision Tree classifier");
-
             Instances dataset = getDataset(datasetDirectory);
 
             dataset.setClassIndex(dataset.numAttributes()-1);

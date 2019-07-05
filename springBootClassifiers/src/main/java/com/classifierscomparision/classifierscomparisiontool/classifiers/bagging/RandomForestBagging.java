@@ -1,14 +1,14 @@
-package com.classifierscomparision.classifierscomparisiontool.classifiers.crossValidation;
+package com.classifierscomparision.classifierscomparisiontool.classifiers.bagging;
 
 import com.classifierscomparision.classifierscomparisiontool.classifiers.DefaultDataSupplier;
 import weka.classifiers.Evaluation;
 import weka.classifiers.functions.LibSVM;
-import weka.classifiers.lazy.IBk;
+import weka.classifiers.meta.Bagging;
+import weka.classifiers.trees.RandomForest;
 import weka.core.Instances;
 
-import java.util.Random;
 
-public class KNNCrossValidation extends Thread implements DefaultDataSupplier {
+public class RandomForestBagging extends Thread implements DefaultDataSupplier {
 
     private volatile Double F1score;
     private volatile Double Accuracy;
@@ -17,23 +17,16 @@ public class KNNCrossValidation extends Thread implements DefaultDataSupplier {
 
     String datasetDirectory= "";
 
-    public IBk buildmodel(Instances dataset){
-
-        dataset.setClassIndex(dataset.numAttributes()-1);
-
-        return new IBk();
-    }
-
-    public void makeEvaluation(Instances dataset, IBk model) throws Exception{
+    public void makeEvaluation(Instances dataset,Bagging bagger) throws Exception{
         Evaluation evaluation = new Evaluation(dataset);
 
-        evaluation.crossValidateModel(model, dataset, 10 , new Random(1));
-
+        evaluation.evaluateModel(bagger, dataset);
 
         Double F1Score = evaluation.weightedFMeasure();
         Double accuracy = evaluation.pctCorrect()/100;
         Double sensivity = evaluation.weightedRecall();
         Double specificity = evaluation.weightedTrueNegativeRate();
+
 
         this.F1score=F1Score;
         this.Accuracy=accuracy;
@@ -41,7 +34,7 @@ public class KNNCrossValidation extends Thread implements DefaultDataSupplier {
         this.Specificity=specificity;
     }
 
-    public KNNCrossValidation(String datasetDirectory) {
+    public RandomForestBagging(String datasetDirectory) {
         this.datasetDirectory = datasetDirectory;
     }
 
@@ -68,15 +61,18 @@ public class KNNCrossValidation extends Thread implements DefaultDataSupplier {
         try {
             Instances dataset = getDataset(datasetDirectory);
 
-            System.out.println("Inside LibSVM classifier");
+            dataset.setClassIndex(dataset.numAttributes()-1);
 
+            Bagging bagger = new Bagging();
 
-            IBk model = buildmodel(dataset);
-            model.setKNN(3);
+            RandomForest model = new RandomForest();
+            model.setNumIterations(20);
+            bagger.setClassifier(model);
+            bagger.setNumIterations(25);
+            bagger.buildClassifier(dataset);
             model.buildClassifier(dataset);
 
-
-            makeEvaluation(dataset, model);
+            makeEvaluation(dataset, bagger);
             System.out.println("\n");
 
 

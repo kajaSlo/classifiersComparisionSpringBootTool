@@ -3,12 +3,12 @@ package com.classifierscomparision.classifierscomparisiontool.classifiers.crossV
 import com.classifierscomparision.classifierscomparisiontool.classifiers.DefaultDataSupplier;
 import weka.classifiers.Evaluation;
 import weka.classifiers.functions.LibSVM;
-import weka.classifiers.lazy.IBk;
+import weka.classifiers.trees.RandomForest;
 import weka.core.Instances;
 
 import java.util.Random;
 
-public class KNNCrossValidation extends Thread implements DefaultDataSupplier {
+public class RandomForestCrossVal extends Thread implements DefaultDataSupplier {
 
     private volatile Double F1score;
     private volatile Double Accuracy;
@@ -17,14 +17,14 @@ public class KNNCrossValidation extends Thread implements DefaultDataSupplier {
 
     String datasetDirectory= "";
 
-    public IBk buildmodel(Instances dataset){
+    public RandomForest buildmodel(Instances dataset){
 
         dataset.setClassIndex(dataset.numAttributes()-1);
 
-        return new IBk();
+        return new  RandomForest ();
     }
 
-    public void makeEvaluation(Instances dataset, IBk model) throws Exception{
+    public void makeEvaluation(Instances dataset, RandomForest model) throws Exception{
         Evaluation evaluation = new Evaluation(dataset);
 
         evaluation.crossValidateModel(model, dataset, 10 , new Random(1));
@@ -35,13 +35,14 @@ public class KNNCrossValidation extends Thread implements DefaultDataSupplier {
         Double sensivity = evaluation.weightedRecall();
         Double specificity = evaluation.weightedTrueNegativeRate();
 
+
         this.F1score=F1Score;
         this.Accuracy=accuracy;
         this.Sensivity=sensivity;
         this.Specificity=specificity;
     }
 
-    public KNNCrossValidation(String datasetDirectory) {
+    public RandomForestCrossVal(String datasetDirectory) {
         this.datasetDirectory = datasetDirectory;
     }
 
@@ -71,8 +72,8 @@ public class KNNCrossValidation extends Thread implements DefaultDataSupplier {
             System.out.println("Inside LibSVM classifier");
 
 
-            IBk model = buildmodel(dataset);
-            model.setKNN(3);
+            RandomForest model = buildmodel(dataset);
+            model.setNumIterations(20); //the same as set num trees
             model.buildClassifier(dataset);
 
 
