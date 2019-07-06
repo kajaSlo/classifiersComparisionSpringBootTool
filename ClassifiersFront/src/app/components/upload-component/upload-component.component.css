@@ -1,12 +1,11 @@
-button{
-     margin-left: 80px;
-     background-color: #008CBA;
-     size: 150%;
-    
+button {
+  margin-left: 500px;
+  background-color: #008cba;
+  size: 150%;
 }
 
-.mainPage{
-    margin-left: 80px;
-    background-color: #008CBA;
-    font-size: 24px;
+.mainPage {
+  margin-left: 500px;
+  background-color: #008cba;
+  font-size: 24px;
 }

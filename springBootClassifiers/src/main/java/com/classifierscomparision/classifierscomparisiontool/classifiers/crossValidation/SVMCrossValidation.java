@@ -29,7 +29,6 @@ public class SVMCrossValidation extends Thread implements DefaultDataSupplier {
 
         evaluation.crossValidateModel(model, dataset, 10 , new Random(1));
 
-
         Double F1Score = evaluation.weightedFMeasure();
         Double accuracy = evaluation.pctCorrect()/100;
         Double sensivity = evaluation.weightedRecall();
@@ -45,19 +44,15 @@ public class SVMCrossValidation extends Thread implements DefaultDataSupplier {
         this.datasetDirectory = datasetDirectory;
     }
 
-
     public Double getF1Score() {
         return F1score;
     }
-
     public Double getAccuracy() {
         return Accuracy;
     }
-
     public Double getSensivity() {
         return Sensivity;
     }
-
     public Double getSpecificity() {
         return Specificity;
     }
@@ -68,16 +63,11 @@ public class SVMCrossValidation extends Thread implements DefaultDataSupplier {
         try {
             Instances dataset = getDataset(datasetDirectory);
 
-            System.out.println("Inside LibSVM classifier");
-
-
             LibSVM model = buildmodel(dataset);
             model.buildClassifier(dataset);
 
-
             makeEvaluation(dataset, model);
             System.out.println("\n");
-
 
         }catch(Exception e){
             System.out.println(e);

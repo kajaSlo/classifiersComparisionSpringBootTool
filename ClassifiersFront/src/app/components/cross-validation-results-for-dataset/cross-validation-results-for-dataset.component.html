@@ -1,0 +1,23 @@
+<br />
+<br />
+
+<a class="btn btn-primary" routerLink="/">Back to main page</a>
+
+<h3>Cross validation results</h3>
+<br />
+<table style="width:90%" class="table table-striped">
+  <tr>
+    <th>Method used:</th>
+    <th>Accuracy:</th>
+    <th>Sensivity:</th>
+    <th>Specificity:</th>
+    <th>F1Score:</th>
+  </tr>
+  <tr *ngFor="let methodResults of method">
+    <td>{{ methodResults.methodName }}</td>
+    <td>{{ methodResults.accuracy }}</td>
+    <td>{{ methodResults.sensivity }}</td>
+    <td>{{ methodResults.specificity }}</td>
+    <td>{{ methodResults.f1Score }}</td>
+  </tr>
+</table>

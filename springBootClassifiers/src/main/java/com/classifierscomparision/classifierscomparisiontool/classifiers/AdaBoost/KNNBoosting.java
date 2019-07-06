@@ -1,15 +1,12 @@
-package com.classifierscomparision.classifierscomparisiontool.classifiers.bagging;
+package com.classifierscomparision.classifierscomparisiontool.classifiers.AdaBoost;
 
 import com.classifierscomparision.classifierscomparisiontool.classifiers.DefaultDataSupplier;
 import weka.classifiers.Evaluation;
-import weka.classifiers.functions.LibSVM;
+import weka.classifiers.lazy.IBk;
 import weka.classifiers.meta.AdaBoostM1;
-import weka.classifiers.meta.Bagging;
-import weka.classifiers.trees.RandomForest;
 import weka.core.Instances;
 
-
-public class RandomForestBagging extends Thread implements DefaultDataSupplier {
+public class KNNBoosting extends Thread implements DefaultDataSupplier {
 
     private volatile Double F1score;
     private volatile Double Accuracy;
@@ -18,10 +15,11 @@ public class RandomForestBagging extends Thread implements DefaultDataSupplier {
 
     String datasetDirectory= "";
 
-    public void makeEvaluation(Instances dataset, Bagging bagger) throws Exception{
+    public void makeEvaluation(Instances dataset,AdaBoostM1 m1) throws Exception{
         Evaluation evaluation = new Evaluation(dataset);
 
-        evaluation.evaluateModel(bagger, dataset);
+        evaluation.evaluateModel(m1, dataset);
+
 
         Double F1Score = evaluation.weightedFMeasure();
         Double accuracy = evaluation.pctCorrect()/100;
@@ -34,7 +32,7 @@ public class RandomForestBagging extends Thread implements DefaultDataSupplier {
         this.Specificity=specificity;
     }
 
-    public RandomForestBagging(String datasetDirectory) {
+    public KNNBoosting(String datasetDirectory) {
         this.datasetDirectory = datasetDirectory;
     }
 
@@ -63,16 +61,16 @@ public class RandomForestBagging extends Thread implements DefaultDataSupplier {
 
             dataset.setClassIndex(dataset.numAttributes()-1);
 
-            Bagging bagger = new Bagging();
+            AdaBoostM1 m1 = new AdaBoostM1();
 
-            RandomForest model = new RandomForest();
-            model.setNumIterations(20);
-            bagger.setClassifier(model);
-            bagger.setNumIterations(25);
-            bagger.buildClassifier(dataset);
+            IBk model = new IBk();
+            model.setKNN(3);
+            m1.setClassifier(model);
+            m1.setNumIterations(25);
+            m1.buildClassifier(dataset);
             model.buildClassifier(dataset);
 
-            makeEvaluation(dataset, bagger);
+            makeEvaluation(dataset, m1);
             System.out.println("\n");
 
 

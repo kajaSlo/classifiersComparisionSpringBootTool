@@ -3,6 +3,7 @@ package com.classifierscomparision.classifierscomparisiontool.classifiers.baggin
 import com.classifierscomparision.classifierscomparisiontool.classifiers.DefaultDataSupplier;
 import weka.classifiers.Evaluation;
 import weka.classifiers.lazy.IBk;
+import weka.classifiers.meta.AdaBoostM1;
 import weka.classifiers.meta.Bagging;
 import weka.core.Instances;
 
@@ -16,18 +17,15 @@ public class KNNBagging extends Thread implements DefaultDataSupplier {
 
     String datasetDirectory= "";
 
-    public void makeEvaluation(Instances dataset, IBk model, Bagging bagger) throws Exception{
+    public void makeEvaluation(Instances dataset, Bagging bagger) throws Exception{
         Evaluation evaluation = new Evaluation(dataset);
 
         evaluation.evaluateModel(bagger, dataset);
-
 
         Double F1Score = evaluation.weightedFMeasure();
         Double accuracy = evaluation.pctCorrect()/100;
         Double sensivity = evaluation.weightedRecall();
         Double specificity = evaluation.weightedTrueNegativeRate();
-
-        Double weightedResult = (F1Score + accuracy + sensivity + specificity)/4;
 
         this.F1score=F1Score;
         this.Accuracy=accuracy;
@@ -73,7 +71,7 @@ public class KNNBagging extends Thread implements DefaultDataSupplier {
             bagger.buildClassifier(dataset);
             model.buildClassifier(dataset);
 
-            makeEvaluation(dataset, model,bagger);
+            makeEvaluation(dataset,bagger);
             System.out.println("\n");
 
 

@@ -52,4 +52,9 @@ public class MethodService {
         return methodRepository.findAllByDataset_IdAndSplitNameEqualsOrderByResultDesc(id, "Bagging");
     }
 
+    public Iterable<Method> findBoostingMethodsByDatasetId(Long id){
+        return methodRepository.findAllByDataset_IdAndSplitNameEqualsOrderByResultDesc(id, "Boosting");
+    }
+
+
 }

@@ -1,0 +1,20 @@
+table,
+th,
+td {
+  border: 1px solid black;
+  border-collapse: collapse;
+  size: 80%;
+  margin-left: 50px;
+  margin-right: 50px;
+  background-color: #e6e6fa;
+}
+th,
+td {
+  padding: 5px;
+  text-align: center;
+  font-size: 150%;
+}
+h3 {
+  color: rgb(59, 97, 223);
+  text-align: center;
+}

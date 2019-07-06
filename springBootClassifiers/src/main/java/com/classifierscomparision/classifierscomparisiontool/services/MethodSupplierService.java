@@ -1,5 +1,9 @@
 package com.classifierscomparision.classifierscomparisiontool.services;
 
+import com.classifierscomparision.classifierscomparisiontool.classifiers.AdaBoost.DTBoosting;
+import com.classifierscomparision.classifierscomparisiontool.classifiers.AdaBoost.KNNBoosting;
+import com.classifierscomparision.classifierscomparisiontool.classifiers.AdaBoost.RandomForestBoosting;
+import com.classifierscomparision.classifierscomparisiontool.classifiers.AdaBoost.SVMBoosting;
 import com.classifierscomparision.classifierscomparisiontool.classifiers.bagging.DTBagging;
 import com.classifierscomparision.classifierscomparisiontool.classifiers.bagging.KNNBagging;
 import com.classifierscomparision.classifierscomparisiontool.classifiers.bagging.RandomForestBagging;
@@ -31,6 +35,7 @@ public class MethodSupplierService {
 
         addMethodsCrossValidation(dataset_id, fileName, projectDir);
         addMethodsBagging(dataset_id, fileName, projectDir);
+        addMethodsBoosting(dataset_id, fileName, projectDir);
 
     }
 
@@ -275,5 +280,127 @@ public class MethodSupplierService {
         RandomForestMethodBagging.setSpecificity(SpecificityRandomForestBagging);
 
         methodService.addMethod(dataset_id, RandomForestMethodBagging);
+    }
+
+
+
+    private void addMethodsBoosting(Long dataset_id, String fileName, String projectDir) throws InterruptedException{
+
+        List<Thread> threads = new ArrayList<>();
+
+
+        DTBoosting decisionTreeClassifierBoosting = new DTBoosting(projectDir + "/datasets/CSVDatasets/" + fileName);
+        threads.add(decisionTreeClassifierBoosting);
+
+        SVMBoosting svmBoosting = new SVMBoosting(projectDir + "/datasets/CSVDatasets/" + fileName);
+        threads.add(svmBoosting);
+
+        KNNBoosting knnClassifierBoosting = new KNNBoosting(projectDir + "/datasets/CSVDatasets/" + fileName);
+        threads.add(knnClassifierBoosting);
+
+        RandomForestBoosting randomForestClassifierBoosting = new RandomForestBoosting(projectDir + "/datasets/CSVDatasets/" + fileName);
+        threads.add(randomForestClassifierBoosting);
+
+        for (Thread thread : threads) {
+            thread.start();
+            thread.join();
+        }
+
+        addDecisionTreeBoosting(dataset_id, decisionTreeClassifierBoosting);
+        addSVMBoosting(dataset_id, svmBoosting);
+        addKNNBoosting(dataset_id, knnClassifierBoosting);
+        addRandomForestBoosting(dataset_id, randomForestClassifierBoosting);
+    }
+
+    public void addDecisionTreeBoosting(Long dataset_id, DTBoosting decisionTreeClassifierBoosting){
+
+
+        Double F1scoreDTBoosting = decisionTreeClassifierBoosting.getF1Score();
+        Double AccuracyDTBoosting = decisionTreeClassifierBoosting.getAccuracy();
+        Double SensivityDTBoosting = decisionTreeClassifierBoosting.getSensivity();
+        Double SpecificityDTBoosting = decisionTreeClassifierBoosting.getSpecificity();
+
+        Double weightedResultDTBoosting = (F1scoreDTBoosting + AccuracyDTBoosting + SensivityDTBoosting + SpecificityDTBoosting)/4;
+
+        Method decisionTreeMethodBoosting = new Method();
+
+        decisionTreeMethodBoosting.setMethodName("Decision tree");
+        decisionTreeMethodBoosting.setResult(weightedResultDTBoosting);
+        decisionTreeMethodBoosting.setSplitName("Boosting");
+        decisionTreeMethodBoosting.setF1Score(F1scoreDTBoosting);
+        decisionTreeMethodBoosting.setAccuracy(AccuracyDTBoosting);
+        decisionTreeMethodBoosting.setSensivity(SensivityDTBoosting);
+        decisionTreeMethodBoosting.setSpecificity(SpecificityDTBoosting);
+
+        methodService.addMethod(dataset_id, decisionTreeMethodBoosting);
+    }
+
+   public void addSVMBoosting(Long dataset_id, SVMBoosting svmBoosting){
+
+       Double F1scoreSVMBoosting= svmBoosting.getF1Score();
+       Double AccuracySVMBoosting = svmBoosting.getAccuracy();
+       Double SensivitySVMBoosting= svmBoosting.getSensivity();
+       Double SpecificitySVMBoosting = svmBoosting.getSpecificity();
+
+       Double weightedResultSVMBoosting = (F1scoreSVMBoosting + AccuracySVMBoosting + SensivitySVMBoosting + SpecificitySVMBoosting)/4;
+
+       Method SVMMethodBoosting = new Method();
+
+       SVMMethodBoosting.setMethodName("SVM");
+       SVMMethodBoosting.setResult(weightedResultSVMBoosting);
+       SVMMethodBoosting.setSplitName("Boosting");
+       SVMMethodBoosting.setF1Score(F1scoreSVMBoosting);
+       SVMMethodBoosting.setAccuracy(AccuracySVMBoosting);
+       SVMMethodBoosting.setSensivity(SensivitySVMBoosting);
+       SVMMethodBoosting.setSpecificity(SpecificitySVMBoosting);
+
+       methodService.addMethod(dataset_id, SVMMethodBoosting);
+
+    }
+
+   public void  addKNNBoosting(Long dataset_id, KNNBoosting knnClassifierBoosting){
+
+       Double F1scoreKNNBoosting= knnClassifierBoosting.getF1Score();
+       Double AccuracyKNNBoosting = knnClassifierBoosting.getAccuracy();
+       Double SensivityKNNBoosting = knnClassifierBoosting.getSensivity();
+       Double SpecificityKNNBoosting = knnClassifierBoosting.getSpecificity();
+
+       Double weightedResultKNNBoosting = (F1scoreKNNBoosting + AccuracyKNNBoosting + SensivityKNNBoosting + SpecificityKNNBoosting)/4;
+
+
+       Method KNNMethodBoosting = new Method();
+
+       KNNMethodBoosting.setMethodName("K nearest neighbour");
+       KNNMethodBoosting.setResult(weightedResultKNNBoosting);
+       KNNMethodBoosting.setSplitName("Boosting");
+       KNNMethodBoosting.setF1Score(F1scoreKNNBoosting);
+       KNNMethodBoosting.setAccuracy(AccuracyKNNBoosting);
+       KNNMethodBoosting.setSensivity(SensivityKNNBoosting);
+       KNNMethodBoosting.setSpecificity(SpecificityKNNBoosting);
+
+       methodService.addMethod(dataset_id,KNNMethodBoosting);
+   }
+
+    public void addRandomForestBoosting(Long dataset_id, RandomForestBoosting randomForestClassifierBoosting){
+
+
+        Double F1scoreRandomForestBoosting = randomForestClassifierBoosting.getF1Score();
+        Double AccuracyRandomForestBoosting = randomForestClassifierBoosting.getAccuracy();
+        Double SensivityRandomForestBoosting = randomForestClassifierBoosting.getSensivity();
+        Double SpecificityRandomForestBoosting = randomForestClassifierBoosting.getSpecificity();
+
+        Double weightedResultRandomForestBoosting = (F1scoreRandomForestBoosting + AccuracyRandomForestBoosting + SensivityRandomForestBoosting + SpecificityRandomForestBoosting)/4;
+
+        Method RandomForestMethodBoosting = new Method();
+
+        RandomForestMethodBoosting.setMethodName("Random Forest");
+        RandomForestMethodBoosting.setResult(weightedResultRandomForestBoosting);
+        RandomForestMethodBoosting.setSplitName("Boosting");
+        RandomForestMethodBoosting.setF1Score(F1scoreRandomForestBoosting);
+        RandomForestMethodBoosting.setAccuracy(AccuracyRandomForestBoosting);
+        RandomForestMethodBoosting.setSensivity(SensivityRandomForestBoosting);
+        RandomForestMethodBoosting.setSpecificity(SpecificityRandomForestBoosting);
+
+        methodService.addMethod(dataset_id, RandomForestMethodBoosting);
     }
 }

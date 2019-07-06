@@ -29,12 +29,10 @@ public class RandomForestCrossVal extends Thread implements DefaultDataSupplier 
 
         evaluation.crossValidateModel(model, dataset, 10 , new Random(1));
 
-
         Double F1Score = evaluation.weightedFMeasure();
         Double accuracy = evaluation.pctCorrect()/100;
         Double sensivity = evaluation.weightedRecall();
         Double specificity = evaluation.weightedTrueNegativeRate();
-
 
         this.F1score=F1Score;
         this.Accuracy=accuracy;
@@ -46,19 +44,15 @@ public class RandomForestCrossVal extends Thread implements DefaultDataSupplier 
         this.datasetDirectory = datasetDirectory;
     }
 
-
     public Double getF1Score() {
         return F1score;
     }
-
     public Double getAccuracy() {
         return Accuracy;
     }
-
     public Double getSensivity() {
         return Sensivity;
     }
-
     public Double getSpecificity() {
         return Specificity;
     }
@@ -69,17 +63,12 @@ public class RandomForestCrossVal extends Thread implements DefaultDataSupplier 
         try {
             Instances dataset = getDataset(datasetDirectory);
 
-            System.out.println("Inside LibSVM classifier");
-
-
             RandomForest model = buildmodel(dataset);
             model.setNumIterations(20); //the same as set num trees
             model.buildClassifier(dataset);
 
-
             makeEvaluation(dataset, model);
             System.out.println("\n");
-
 
         }catch(Exception e){
             System.out.println(e);

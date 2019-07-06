@@ -8,12 +8,29 @@ import { HttpModule } from "@angular/http";
 import { RouterModule, Routes } from "@angular/router";
 import { UploadComponentComponent } from "./components/upload-component/upload-component.component";
 import { ResultsForUploadedFileComponent } from "./components/results-for-uploaded-file/results-for-uploaded-file.component";
+import { CrossValidationResultsForDatasetComponent } from "./components/cross-validation-results-for-dataset/cross-validation-results-for-dataset.component";
+import { MainPageComponent } from "./components/main-page/main-page.component";
+import { BaggingResultsForDatasetComponent } from "./components/bagging-results-for-dataset/bagging-results-for-dataset.component";
+import { BoostingResultsForDatasetComponent } from "./components/boosting-results-for-dataset/boosting-results-for-dataset.component";
 
 const appRoutes: Routes = [
-  { path: "", component: UploadComponentComponent },
+  { path: "", component: MainPageComponent },
   {
     path: "uploadedFileResults/:id",
     component: ResultsForUploadedFileComponent
+  },
+  {
+    path: "crossValidationResuls/:id",
+    component: CrossValidationResultsForDatasetComponent
+  },
+  {
+    path: "baggingResults/:id",
+    component: BaggingResultsForDatasetComponent
+  },
+
+  {
+    path: "boostingResults/:id",
+    component: BoostingResultsForDatasetComponent
   }
 ];
 
@@ -22,7 +39,11 @@ const appRoutes: Routes = [
     AppComponent,
     FileSelectDirective,
     UploadComponentComponent,
-    ResultsForUploadedFileComponent
+    ResultsForUploadedFileComponent,
+    CrossValidationResultsForDatasetComponent,
+    MainPageComponent,
+    BaggingResultsForDatasetComponent,
+    BoostingResultsForDatasetComponent
   ],
   imports: [
     BrowserModule,

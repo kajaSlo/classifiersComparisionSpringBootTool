@@ -8,8 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-
 import javax.validation.Valid;
 
 
@@ -54,6 +52,12 @@ public class MethodController {
     public Iterable<Method> getDatasetMethodsBaggingSplit(@PathVariable Long dataset_id){
 
         return methodService.findBaggingMethodsByDatasetId(dataset_id);
+    }
+
+    @GetMapping("/methods/boosting/{dataset_id}")
+    public Iterable<Method> getDatasetMethodsBoostingSplit(@PathVariable Long dataset_id){
+
+        return methodService.findBoostingMethodsByDatasetId(dataset_id);
     }
 
 

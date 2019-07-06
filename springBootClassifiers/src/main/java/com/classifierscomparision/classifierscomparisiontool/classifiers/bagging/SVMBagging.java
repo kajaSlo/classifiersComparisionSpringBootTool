@@ -3,10 +3,9 @@ package com.classifierscomparision.classifierscomparisiontool.classifiers.baggin
 import com.classifierscomparision.classifierscomparisiontool.classifiers.DefaultDataSupplier;
 import weka.classifiers.Evaluation;
 import weka.classifiers.functions.LibSVM;
+import weka.classifiers.meta.AdaBoostM1;
 import weka.classifiers.meta.Bagging;
 import weka.core.Instances;
-
-import java.util.Random;
 
 public class SVMBagging extends Thread implements DefaultDataSupplier {
 
@@ -17,7 +16,7 @@ public class SVMBagging extends Thread implements DefaultDataSupplier {
 
     String datasetDirectory= "";
 
-    public void makeEvaluation(Instances dataset, LibSVM model, Bagging bagger) throws Exception{
+    public void makeEvaluation(Instances dataset, Bagging bagger) throws Exception{
         Evaluation evaluation = new Evaluation(dataset);
 
         evaluation.evaluateModel(bagger, dataset);
@@ -77,7 +76,7 @@ public class SVMBagging extends Thread implements DefaultDataSupplier {
             bagger.buildClassifier(dataset);
             model.buildClassifier(dataset);
 
-            makeEvaluation(dataset, model,bagger);
+            makeEvaluation(dataset, bagger);
             System.out.println("\n");
 
 

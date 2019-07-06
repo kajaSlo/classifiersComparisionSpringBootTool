@@ -1,8 +1,15 @@
+<br />
+<br />
+<input
+  type="file"
+  name="photo"
+  class="mainPage"
+  ng2FileSelect
+  [uploader]="uploader"
+/>
 
-<br> <br>
-<input type="file" name="photo" class="mainPage" ng2FileSelect [uploader]="uploader" />
-
-<button style="font-size: 24px; background-color: #008CBA;"
+<button
+  style="font-size: 24px; background-color: #008CBA;"
   type="button"
   class="btn btn-primary"
   (click)="uploader.uploadAll()"
@@ -14,8 +21,13 @@
 <h1 style="color:#5F9EA0;">{{ uploadedDatasetId }}</h1>
 
 <a routerLink="/uploadedFileResults/{{ uploadedDatasetId }}"
-  ><button  style="font-size: 24px;" class="btn btn-success pull-right">Results</button></a
+  ><button style="font-size: 24px;" class="btn btn-success pull-right">
+    Results
+  </button></a
 >
 
-
-
+<a routerLink="/crossValidationResuls/{{ uploadedDatasetId }}"
+  ><button style="font-size: 24px;" class="btn btn-success pull-right">
+    Cross Validation results
+  </button></a
+>

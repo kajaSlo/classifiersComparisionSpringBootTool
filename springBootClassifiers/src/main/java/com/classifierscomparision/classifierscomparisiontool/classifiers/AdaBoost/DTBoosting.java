@@ -1,15 +1,14 @@
-package com.classifierscomparision.classifierscomparisiontool.classifiers.bagging;
+package com.classifierscomparision.classifierscomparisiontool.classifiers.AdaBoost;
 
-import com.classifierscomparision.classifierscomparisiontool.classifiers.DefaultDataSupplier;
+import com.classifierscomparision.classifierscomparisiontool.classifiers.crossValidation.DefaultDataSupplier;
 import weka.classifiers.Evaluation;
-import weka.classifiers.functions.LibSVM;
 import weka.classifiers.meta.AdaBoostM1;
-import weka.classifiers.meta.Bagging;
-import weka.classifiers.trees.RandomForest;
+import weka.classifiers.trees.J48;
 import weka.core.Instances;
 
 
-public class RandomForestBagging extends Thread implements DefaultDataSupplier {
+public class DTBoosting extends Thread implements DefaultDataSupplier {
+
 
     private volatile Double F1score;
     private volatile Double Accuracy;
@@ -18,15 +17,16 @@ public class RandomForestBagging extends Thread implements DefaultDataSupplier {
 
     String datasetDirectory= "";
 
-    public void makeEvaluation(Instances dataset, Bagging bagger) throws Exception{
+    public void makeEvaluation(Instances dataset, AdaBoostM1 m1) throws Exception{
         Evaluation evaluation = new Evaluation(dataset);
 
-        evaluation.evaluateModel(bagger, dataset);
+        evaluation.evaluateModel(m1, dataset);
 
         Double F1Score = evaluation.weightedFMeasure();
         Double accuracy = evaluation.pctCorrect()/100;
         Double sensivity = evaluation.weightedRecall();
         Double specificity = evaluation.weightedTrueNegativeRate();
+
 
         this.F1score=F1Score;
         this.Accuracy=accuracy;
@@ -34,7 +34,8 @@ public class RandomForestBagging extends Thread implements DefaultDataSupplier {
         this.Specificity=specificity;
     }
 
-    public RandomForestBagging(String datasetDirectory) {
+
+    public DTBoosting(String datasetDirectory) {
         this.datasetDirectory = datasetDirectory;
     }
 
@@ -42,15 +43,12 @@ public class RandomForestBagging extends Thread implements DefaultDataSupplier {
     public Double getF1Score() {
         return F1score;
     }
-
     public Double getAccuracy() {
         return Accuracy;
     }
-
     public Double getSensivity() {
         return Sensivity;
     }
-
     public Double getSpecificity() {
         return Specificity;
     }
@@ -59,22 +57,21 @@ public class RandomForestBagging extends Thread implements DefaultDataSupplier {
     public void run() {
 
         try {
+
             Instances dataset = getDataset(datasetDirectory);
 
             dataset.setClassIndex(dataset.numAttributes()-1);
 
-            Bagging bagger = new Bagging();
+            AdaBoostM1 m1 = new AdaBoostM1();
 
-            RandomForest model = new RandomForest();
-            model.setNumIterations(20);
-            bagger.setClassifier(model);
-            bagger.setNumIterations(25);
-            bagger.buildClassifier(dataset);
+            J48 model = new J48();
+            m1.setClassifier(model);
+            m1.setNumIterations(25);
+            m1.buildClassifier(dataset);
             model.buildClassifier(dataset);
 
-            makeEvaluation(dataset, bagger);
+            makeEvaluation(dataset,m1);
             System.out.println("\n");
-
 
         }catch(Exception e){
             System.out.println(e);

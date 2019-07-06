@@ -1,0 +1,34 @@
+<app-upload-component></app-upload-component>
+
+<h1>All datasets</h1>
+
+<table class="table">
+  <tr bgcolor="#f9f9f9">
+    <th>Dataset name</th>
+    <th>Get cross validation results</th>
+    <th>Get bagging results</th>
+    <th>Get boosting results</th>
+    <!-- <th>Delete</th> -->
+  </tr>
+
+  <tr *ngFor="let dataset of datasets?.value">
+    <td>
+      {{ dataset.datasetName }}
+    </td>
+    <td>
+      <a routerLink="/crossValidationResuls/{{ dataset.id }}"
+        >CrossValidation</a
+      >
+    </td>
+    <td>
+      <a routerLink="/baggingResults/{{ dataset.id }}">Bagging</a>
+    </td>
+
+    <td>
+      <a routerLink="/boostingResults/{{ dataset.id }}">Boosting</a>
+    </td>
+    <!-- <td>
+          <a (click)="deleteProduct(product._id)" routerLink="/admin/products">Delete</a>
+      </td> -->
+  </tr>
+</table>
