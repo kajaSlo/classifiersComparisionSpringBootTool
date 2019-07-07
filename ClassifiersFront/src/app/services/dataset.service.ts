@@ -15,4 +15,10 @@ export class DatasetService {
       .get(" http://localhost:8080/api/dataset/all")
       .pipe(map(res => res.json()));
   }
+
+  getDataset(id) {
+    return this.http
+      .get(" http://localhost:8080/api/dataset/" + id)
+      .pipe(map(res => res.json()));
+  }
 }

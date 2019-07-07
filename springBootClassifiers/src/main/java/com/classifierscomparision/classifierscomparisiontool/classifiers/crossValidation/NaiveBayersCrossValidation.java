@@ -1,14 +1,16 @@
-package com.classifierscomparision.classifierscomparisiontool.classifiers.AdaBoost;
+package com.classifierscomparision.classifierscomparisiontool.classifiers.crossValidation;
 
 import com.classifierscomparision.classifierscomparisiontool.classifiers.DefaultDataSupplier;
 import weka.classifiers.Evaluation;
+import weka.classifiers.bayes.NaiveBayes;
 import weka.classifiers.functions.LibSVM;
-import weka.classifiers.meta.AdaBoostM1;
-import weka.classifiers.meta.Bagging;
 import weka.core.Instances;
 
+import java.util.Random;
 
-public class SVMBoosting extends Thread implements DefaultDataSupplier {
+
+
+public class NaiveBayersCrossValidation extends Thread implements DefaultDataSupplier {
 
     private volatile Double F1score;
     private volatile Double Accuracy;
@@ -17,10 +19,17 @@ public class SVMBoosting extends Thread implements DefaultDataSupplier {
 
     String datasetDirectory= "";
 
-    public void makeEvaluation(Instances dataset, AdaBoostM1 m1) throws Exception{
+    public NaiveBayes buildmodel(Instances dataset){
+
+        dataset.setClassIndex(dataset.numAttributes()-1);
+
+        return new  NaiveBayes ();
+    }
+
+    public void makeEvaluation(Instances dataset, NaiveBayes model) throws Exception{
         Evaluation evaluation = new Evaluation(dataset);
 
-        evaluation.evaluateModel(m1, dataset);
+        evaluation.crossValidateModel(model, dataset, 10 , new Random(1));
 
         Double F1Score = evaluation.weightedFMeasure();
         Double accuracy = evaluation.pctCorrect()/100;
@@ -33,20 +42,19 @@ public class SVMBoosting extends Thread implements DefaultDataSupplier {
         this.Specificity=specificity;
     }
 
-    public SVMBoosting(String datasetDirectory) {
+    public NaiveBayersCrossValidation(String datasetDirectory) {
         this.datasetDirectory = datasetDirectory;
     }
-
 
     public Double getF1Score() {
         return F1score;
     }
     public Double getAccuracy() {
         return Accuracy;
-    }public Double getSensivity() {
+    }
+    public Double getSensivity() {
         return Sensivity;
     }
-
     public Double getSpecificity() {
         return Specificity;
     }
@@ -57,22 +65,15 @@ public class SVMBoosting extends Thread implements DefaultDataSupplier {
         try {
             Instances dataset = getDataset(datasetDirectory);
 
-            dataset.setClassIndex(dataset.numAttributes()-1);
-
-            AdaBoostM1 m1 = new AdaBoostM1();
-
-            LibSVM model = new LibSVM();
-            m1.setClassifier(model);
-            m1.setNumIterations(25);
-            m1.buildClassifier(dataset);
+            NaiveBayes model = buildmodel(dataset);
             model.buildClassifier(dataset);
 
-            makeEvaluation(dataset, m1);
+            makeEvaluation(dataset, model);
             System.out.println("\n");
-
 
         }catch(Exception e){
             System.out.println(e);
         }
+
     }
 }

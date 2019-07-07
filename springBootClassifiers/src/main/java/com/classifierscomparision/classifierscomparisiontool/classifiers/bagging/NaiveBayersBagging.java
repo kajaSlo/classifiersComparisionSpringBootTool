@@ -1,14 +1,13 @@
-package com.classifierscomparision.classifierscomparisiontool.classifiers.AdaBoost;
+package com.classifierscomparision.classifierscomparisiontool.classifiers.bagging;
 
 import com.classifierscomparision.classifierscomparisiontool.classifiers.DefaultDataSupplier;
 import weka.classifiers.Evaluation;
-import weka.classifiers.functions.LibSVM;
-import weka.classifiers.meta.AdaBoostM1;
+import weka.classifiers.bayes.NaiveBayes;
 import weka.classifiers.meta.Bagging;
 import weka.core.Instances;
 
 
-public class SVMBoosting extends Thread implements DefaultDataSupplier {
+public class NaiveBayersBagging extends Thread implements DefaultDataSupplier {
 
     private volatile Double F1score;
     private volatile Double Accuracy;
@@ -17,10 +16,10 @@ public class SVMBoosting extends Thread implements DefaultDataSupplier {
 
     String datasetDirectory= "";
 
-    public void makeEvaluation(Instances dataset, AdaBoostM1 m1) throws Exception{
+    public void makeEvaluation(Instances dataset, Bagging bagger) throws Exception{
         Evaluation evaluation = new Evaluation(dataset);
 
-        evaluation.evaluateModel(m1, dataset);
+        evaluation.evaluateModel(bagger, dataset);
 
         Double F1Score = evaluation.weightedFMeasure();
         Double accuracy = evaluation.pctCorrect()/100;
@@ -33,7 +32,7 @@ public class SVMBoosting extends Thread implements DefaultDataSupplier {
         this.Specificity=specificity;
     }
 
-    public SVMBoosting(String datasetDirectory) {
+    public NaiveBayersBagging(String datasetDirectory) {
         this.datasetDirectory = datasetDirectory;
     }
 
@@ -59,20 +58,21 @@ public class SVMBoosting extends Thread implements DefaultDataSupplier {
 
             dataset.setClassIndex(dataset.numAttributes()-1);
 
-            AdaBoostM1 m1 = new AdaBoostM1();
+            Bagging bagger = new Bagging();
 
-            LibSVM model = new LibSVM();
-            m1.setClassifier(model);
-            m1.setNumIterations(25);
-            m1.buildClassifier(dataset);
+            NaiveBayes model = new NaiveBayes();
+            bagger.setClassifier(model);
+            bagger.setNumIterations(25);
+            bagger.buildClassifier(dataset);
             model.buildClassifier(dataset);
 
-            makeEvaluation(dataset, m1);
+            makeEvaluation(dataset,bagger);
             System.out.println("\n");
 
 
         }catch(Exception e){
             System.out.println(e);
         }
+
     }
 }

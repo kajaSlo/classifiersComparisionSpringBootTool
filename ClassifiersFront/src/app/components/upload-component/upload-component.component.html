@@ -18,16 +18,11 @@
   Upload a dataset
 </button>
 
-<h1 style="color:#5F9EA0;">{{ uploadedDatasetId }}</h1>
+<!-- <h1 style="color:#5F9EA0;">{{ uploadedDatasetId }}</h1> -->
 
-<a routerLink="/uploadedFileResults/{{ uploadedDatasetId }}"
+<!-- <a routerLink="/uploadedFileResults/{{ uploadedDatasetId }}"
   ><button style="font-size: 24px;" class="btn btn-success pull-right">
     Results
   </button></a
->
-
-<a routerLink="/crossValidationResuls/{{ uploadedDatasetId }}"
-  ><button style="font-size: 24px;" class="btn btn-success pull-right">
-    Cross Validation results
-  </button></a
->
+> -->
+<button (click)="refresh()">Refresh</button>

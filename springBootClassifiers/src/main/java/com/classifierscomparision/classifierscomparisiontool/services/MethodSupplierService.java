@@ -1,17 +1,8 @@
 package com.classifierscomparision.classifierscomparisiontool.services;
 
-import com.classifierscomparision.classifierscomparisiontool.classifiers.AdaBoost.DTBoosting;
-import com.classifierscomparision.classifierscomparisiontool.classifiers.AdaBoost.KNNBoosting;
-import com.classifierscomparision.classifierscomparisiontool.classifiers.AdaBoost.RandomForestBoosting;
-import com.classifierscomparision.classifierscomparisiontool.classifiers.AdaBoost.SVMBoosting;
-import com.classifierscomparision.classifierscomparisiontool.classifiers.bagging.DTBagging;
-import com.classifierscomparision.classifierscomparisiontool.classifiers.bagging.KNNBagging;
-import com.classifierscomparision.classifierscomparisiontool.classifiers.bagging.RandomForestBagging;
-import com.classifierscomparision.classifierscomparisiontool.classifiers.bagging.SVMBagging;
-import com.classifierscomparision.classifierscomparisiontool.classifiers.crossValidation.DTCrossValidation;
-import com.classifierscomparision.classifierscomparisiontool.classifiers.crossValidation.KNNCrossValidation;
-import com.classifierscomparision.classifierscomparisiontool.classifiers.crossValidation.RandomForestCrossVal;
-import com.classifierscomparision.classifierscomparisiontool.classifiers.crossValidation.SVMCrossValidation;
+import com.classifierscomparision.classifierscomparisiontool.classifiers.AdaBoost.*;
+import com.classifierscomparision.classifierscomparisiontool.classifiers.bagging.*;
+import com.classifierscomparision.classifierscomparisiontool.classifiers.crossValidation.*;
 import com.classifierscomparision.classifierscomparisiontool.models.Method;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,6 +49,9 @@ public class MethodSupplierService {
         RandomForestCrossVal randomForestClassifierCrossValidation = new RandomForestCrossVal(projectDir + "/datasets/CSVDatasets/" + fileName);
         threads.add(randomForestClassifierCrossValidation);
 
+        NaiveBayersCrossValidation naiveBayersClassifierCrossValidation = new NaiveBayersCrossValidation(projectDir + "/datasets/CSVDatasets/" + fileName);
+        threads.add(naiveBayersClassifierCrossValidation);
+
         for (Thread thread : threads) {
             thread.start();
             thread.join();
@@ -67,7 +61,7 @@ public class MethodSupplierService {
         addSVMCrossValidation(dataset_id, svmCrossValidation);
         addKNNCrossValidation(dataset_id, knnClassifierCrossValidation);
         addRandomForestCrossValidation(dataset_id, randomForestClassifierCrossValidation);
-
+        addNaiveBayersCrossValidation(dataset_id, naiveBayersClassifierCrossValidation);
 
     }
 
@@ -160,8 +154,30 @@ public class MethodSupplierService {
 
         methodService.addMethod(dataset_id, randomForestMethodCrossValidation);
 
-
     }
+
+    public void addNaiveBayersCrossValidation(Long dataset_id, NaiveBayersCrossValidation naiveBayersClassifierCrossValidation){
+
+        Double F1scoreNaiveBayersCrossValidation = naiveBayersClassifierCrossValidation.getF1Score();
+        Double AccuracyNaiveBayersCrossValidation = naiveBayersClassifierCrossValidation.getAccuracy();
+        Double SensivityNaiveBayersCrossValidation = naiveBayersClassifierCrossValidation.getSensivity();
+        Double SpecificityNaiveBayersCrossValidation = naiveBayersClassifierCrossValidation.getSpecificity();
+
+        Double weightedResultNaiveBayersCrossValidation = (F1scoreNaiveBayersCrossValidation + AccuracyNaiveBayersCrossValidation + SensivityNaiveBayersCrossValidation + SpecificityNaiveBayersCrossValidation)/4;
+
+        Method naiveBayersMethodCrossValidation = new Method();
+
+        naiveBayersMethodCrossValidation.setMethodName("Naive Bayers");
+        naiveBayersMethodCrossValidation.setResult(weightedResultNaiveBayersCrossValidation);
+        naiveBayersMethodCrossValidation.setSplitName("CrossValidation");
+        naiveBayersMethodCrossValidation.setF1Score(F1scoreNaiveBayersCrossValidation);
+        naiveBayersMethodCrossValidation.setAccuracy(AccuracyNaiveBayersCrossValidation);
+        naiveBayersMethodCrossValidation.setSensivity(SensivityNaiveBayersCrossValidation);
+        naiveBayersMethodCrossValidation.setSpecificity(SpecificityNaiveBayersCrossValidation);
+
+        methodService.addMethod(dataset_id, naiveBayersMethodCrossValidation);
+    }
+
 
     public void addMethodsBagging(Long dataset_id, String fileName, String projectDir) throws InterruptedException{
 
@@ -179,6 +195,9 @@ public class MethodSupplierService {
         RandomForestBagging randomForestClassifierBagging = new RandomForestBagging(projectDir + "/datasets/CSVDatasets/" + fileName);
         threads.add(randomForestClassifierBagging);
 
+        NaiveBayersBagging naiveBayersClassifierBagging = new NaiveBayersBagging(projectDir + "/datasets/CSVDatasets/" + fileName);
+        threads.add(naiveBayersClassifierBagging);
+
         for (Thread thread : threads) {
             thread.start();
             thread.join();
@@ -188,6 +207,7 @@ public class MethodSupplierService {
         addSVMBagging(dataset_id, svmClassifierBagging);
         addKNNBagging(dataset_id, knnClassifierBagging);
         addRandomForestBagging(dataset_id, randomForestClassifierBagging);
+        addNaiveBayersBagging(dataset_id, naiveBayersClassifierBagging);
 
     }
 
@@ -282,6 +302,29 @@ public class MethodSupplierService {
         methodService.addMethod(dataset_id, RandomForestMethodBagging);
     }
 
+    public void addNaiveBayersBagging(Long dataset_id, NaiveBayersBagging naiveBayersClassifierBagging){
+
+        Double F1scoreNaiveBayersBagging= naiveBayersClassifierBagging.getF1Score();
+        Double AccuracyNaiveBayersBagging = naiveBayersClassifierBagging.getAccuracy();
+        Double SensivityNaiveBayersBagging = naiveBayersClassifierBagging.getSensivity();
+        Double SpecificityNaiveBayersBagging = naiveBayersClassifierBagging.getSpecificity();
+
+        Double weightedResultNaiveBayersBagging = (F1scoreNaiveBayersBagging + AccuracyNaiveBayersBagging + SensivityNaiveBayersBagging + SpecificityNaiveBayersBagging)/4;
+
+
+        Method naiveBayersMethodBagging = new Method();
+
+        naiveBayersMethodBagging.setMethodName("Naive Bayers");
+        naiveBayersMethodBagging.setResult(weightedResultNaiveBayersBagging);
+        naiveBayersMethodBagging.setSplitName("Bagging");
+        naiveBayersMethodBagging.setF1Score(F1scoreNaiveBayersBagging);
+        naiveBayersMethodBagging.setAccuracy(AccuracyNaiveBayersBagging);
+        naiveBayersMethodBagging.setSensivity(SensivityNaiveBayersBagging);
+        naiveBayersMethodBagging.setSpecificity(SpecificityNaiveBayersBagging);
+
+        methodService.addMethod(dataset_id,naiveBayersMethodBagging);
+    }
+
 
 
     private void addMethodsBoosting(Long dataset_id, String fileName, String projectDir) throws InterruptedException{
@@ -301,6 +344,9 @@ public class MethodSupplierService {
         RandomForestBoosting randomForestClassifierBoosting = new RandomForestBoosting(projectDir + "/datasets/CSVDatasets/" + fileName);
         threads.add(randomForestClassifierBoosting);
 
+        NaiveBayersBoosting naiveBayersBoosting = new NaiveBayersBoosting(projectDir + "/datasets/CSVDatasets/" + fileName);
+        threads.add(naiveBayersBoosting);
+
         for (Thread thread : threads) {
             thread.start();
             thread.join();
@@ -310,6 +356,7 @@ public class MethodSupplierService {
         addSVMBoosting(dataset_id, svmBoosting);
         addKNNBoosting(dataset_id, knnClassifierBoosting);
         addRandomForestBoosting(dataset_id, randomForestClassifierBoosting);
+        addNaiveBayersBoosting(dataset_id, naiveBayersBoosting);
     }
 
     public void addDecisionTreeBoosting(Long dataset_id, DTBoosting decisionTreeClassifierBoosting){
@@ -383,7 +430,6 @@ public class MethodSupplierService {
 
     public void addRandomForestBoosting(Long dataset_id, RandomForestBoosting randomForestClassifierBoosting){
 
-
         Double F1scoreRandomForestBoosting = randomForestClassifierBoosting.getF1Score();
         Double AccuracyRandomForestBoosting = randomForestClassifierBoosting.getAccuracy();
         Double SensivityRandomForestBoosting = randomForestClassifierBoosting.getSensivity();
@@ -402,5 +448,28 @@ public class MethodSupplierService {
         RandomForestMethodBoosting.setSpecificity(SpecificityRandomForestBoosting);
 
         methodService.addMethod(dataset_id, RandomForestMethodBoosting);
+    }
+
+    public void addNaiveBayersBoosting(Long dataset_id, NaiveBayersBoosting naiveBayersBoosting){
+
+        Double F1scoreNaiveBayersBoosting= naiveBayersBoosting.getF1Score();
+        Double AccuracyNaiveBayersBoosting = naiveBayersBoosting.getAccuracy();
+        Double SensivityNaiveBayersBoosting = naiveBayersBoosting.getSensivity();
+        Double SpecificityNaiveBayersBoosting = naiveBayersBoosting.getSpecificity();
+
+        Double weightedResultNaiveBayersBoosting = (F1scoreNaiveBayersBoosting + AccuracyNaiveBayersBoosting + SensivityNaiveBayersBoosting + SpecificityNaiveBayersBoosting)/4;
+
+
+        Method naiveBayersMethodBoosting = new Method();
+
+        naiveBayersMethodBoosting.setMethodName("Naive Bayers");
+        naiveBayersMethodBoosting.setResult(weightedResultNaiveBayersBoosting);
+        naiveBayersMethodBoosting.setSplitName("Boosting");
+        naiveBayersMethodBoosting.setF1Score(F1scoreNaiveBayersBoosting);
+        naiveBayersMethodBoosting.setAccuracy(AccuracyNaiveBayersBoosting);
+        naiveBayersMethodBoosting.setSensivity(SensivityNaiveBayersBoosting);
+        naiveBayersMethodBoosting.setSpecificity(SpecificityNaiveBayersBoosting);
+
+        methodService.addMethod(dataset_id,naiveBayersMethodBoosting);
     }
 }

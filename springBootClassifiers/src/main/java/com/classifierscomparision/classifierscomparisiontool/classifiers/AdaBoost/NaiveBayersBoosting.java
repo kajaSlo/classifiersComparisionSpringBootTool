@@ -2,13 +2,11 @@ package com.classifierscomparision.classifierscomparisiontool.classifiers.AdaBoo
 
 import com.classifierscomparision.classifierscomparisiontool.classifiers.DefaultDataSupplier;
 import weka.classifiers.Evaluation;
-import weka.classifiers.functions.LibSVM;
+import weka.classifiers.bayes.NaiveBayes;
 import weka.classifiers.meta.AdaBoostM1;
-import weka.classifiers.meta.Bagging;
 import weka.core.Instances;
 
-
-public class SVMBoosting extends Thread implements DefaultDataSupplier {
+public class NaiveBayersBoosting extends Thread implements DefaultDataSupplier {
 
     private volatile Double F1score;
     private volatile Double Accuracy;
@@ -33,7 +31,7 @@ public class SVMBoosting extends Thread implements DefaultDataSupplier {
         this.Specificity=specificity;
     }
 
-    public SVMBoosting(String datasetDirectory) {
+    public NaiveBayersBoosting(String datasetDirectory) {
         this.datasetDirectory = datasetDirectory;
     }
 
@@ -61,15 +59,13 @@ public class SVMBoosting extends Thread implements DefaultDataSupplier {
 
             AdaBoostM1 m1 = new AdaBoostM1();
 
-            LibSVM model = new LibSVM();
+            NaiveBayes model = new NaiveBayes();
             m1.setClassifier(model);
             m1.setNumIterations(25);
             m1.buildClassifier(dataset);
             model.buildClassifier(dataset);
 
             makeEvaluation(dataset, m1);
-            System.out.println("\n");
-
 
         }catch(Exception e){
             System.out.println(e);

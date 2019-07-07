@@ -41,15 +41,12 @@ public class KNNBagging extends Thread implements DefaultDataSupplier {
     public Double getF1Score() {
         return F1score;
     }
-
     public Double getAccuracy() {
         return Accuracy;
     }
-
     public Double getSensivity() {
         return Sensivity;
     }
-
     public Double getSpecificity() {
         return Specificity;
     }
@@ -78,6 +75,5 @@ public class KNNBagging extends Thread implements DefaultDataSupplier {
         }catch(Exception e){
             System.out.println(e);
         }
-
     }
 }

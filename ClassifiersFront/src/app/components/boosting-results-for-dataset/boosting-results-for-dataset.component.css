@@ -18,3 +18,7 @@ h3 {
   color: rgb(59, 97, 223);
   text-align: center;
 }
+
+.btn {
+  margin-left: 50px;
+}

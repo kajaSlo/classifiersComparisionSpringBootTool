@@ -36,4 +36,8 @@ export class UploadComponentComponent implements OnInit {
       alert("File uploaded successfully");
     };
   }
+
+  refresh(): void {
+    window.location.reload();
+  }
 }
