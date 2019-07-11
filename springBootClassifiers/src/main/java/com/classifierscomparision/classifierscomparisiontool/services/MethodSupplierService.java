@@ -51,6 +51,9 @@ public class MethodSupplierService {
 
         NaiveBayersCrossValidation naiveBayersClassifierCrossValidation = new NaiveBayersCrossValidation(projectDir + "/datasets/CSVDatasets/" + fileName);
         threads.add(naiveBayersClassifierCrossValidation);
+        
+        MultiLayerPerceptionCrossValidation MLPClassifierCrossValidation = new MultiLayerPerceptionCrossValidation(projectDir + "/datasets/CSVDatasets/" + fileName);
+        threads.add(MLPClassifierCrossValidation);
 
         for (Thread thread : threads) {
             thread.start();
@@ -62,6 +65,7 @@ public class MethodSupplierService {
         addKNNCrossValidation(dataset_id, knnClassifierCrossValidation);
         addRandomForestCrossValidation(dataset_id, randomForestClassifierCrossValidation);
         addNaiveBayersCrossValidation(dataset_id, naiveBayersClassifierCrossValidation);
+        addMLPCrossValidation(dataset_id, MLPClassifierCrossValidation);
 
     }
 
@@ -156,6 +160,7 @@ public class MethodSupplierService {
 
     }
 
+    
     public void addNaiveBayersCrossValidation(Long dataset_id, NaiveBayersCrossValidation naiveBayersClassifierCrossValidation){
 
         Double F1scoreNaiveBayersCrossValidation = naiveBayersClassifierCrossValidation.getF1Score();
@@ -197,7 +202,10 @@ public class MethodSupplierService {
 
         NaiveBayersBagging naiveBayersClassifierBagging = new NaiveBayersBagging(projectDir + "/datasets/CSVDatasets/" + fileName);
         threads.add(naiveBayersClassifierBagging);
-
+        
+        MultilayerPerceptronBagging multilayerPerceptronClassifierBagging = new MultilayerPerceptronBagging(projectDir + "/datasets/CSVDatasets/" + fileName);
+        threads.add(multilayerPerceptronClassifierBagging);
+        
         for (Thread thread : threads) {
             thread.start();
             thread.join();
@@ -208,6 +216,7 @@ public class MethodSupplierService {
         addKNNBagging(dataset_id, knnClassifierBagging);
         addRandomForestBagging(dataset_id, randomForestClassifierBagging);
         addNaiveBayersBagging(dataset_id, naiveBayersClassifierBagging);
+        addMLPBagging(dataset_id, multilayerPerceptronClassifierBagging);
 
     }
 
@@ -234,7 +243,30 @@ public class MethodSupplierService {
         methodService.addMethod(dataset_id, decisionTreeMethodBagging);
     }
 
-    public void addSVMBagging(Long dataset_id, SVMBagging svmClassifierBagging){
+    public void addMLPCrossValidation(Long dataset_id, MultiLayerPerceptionCrossValidation MLPClassifierCrossValidation){
+		
+	    Double F1scoreMLPCrossValidation = MLPClassifierCrossValidation.getF1Score();
+	    Double AccuracyMLPCrossValidation = MLPClassifierCrossValidation.getAccuracy();
+	    Double SensivityMLPCrossValidation = MLPClassifierCrossValidation.getSensivity();
+	    Double SpecificityMLPCrossValidation = MLPClassifierCrossValidation.getSpecificity();
+	
+	    Double weightedResultMLPCrossValidation = (F1scoreMLPCrossValidation + AccuracyMLPCrossValidation + SensivityMLPCrossValidation + SpecificityMLPCrossValidation)/4;
+	    Method MLPMethodCrossValidation = new Method();
+	
+	    MLPMethodCrossValidation.setMethodName("Multilayer Perceptor");
+	    MLPMethodCrossValidation.setResult(weightedResultMLPCrossValidation);
+	    MLPMethodCrossValidation.setSplitName("CrossValidation");
+	    MLPMethodCrossValidation.setF1Score(F1scoreMLPCrossValidation);
+	    MLPMethodCrossValidation.setAccuracy(AccuracyMLPCrossValidation);
+	    MLPMethodCrossValidation.setSensivity(SensivityMLPCrossValidation);
+	    MLPMethodCrossValidation.setSpecificity(SpecificityMLPCrossValidation);
+	
+	    methodService.addMethod(dataset_id, MLPMethodCrossValidation);
+		
+	}
+
+
+	public void addSVMBagging(Long dataset_id, SVMBagging svmClassifierBagging){
 
 
         Double F1scoreSVMBagging= svmClassifierBagging.getF1Score();
@@ -325,6 +357,29 @@ public class MethodSupplierService {
         methodService.addMethod(dataset_id,naiveBayersMethodBagging);
     }
 
+    public void addMLPBagging(Long dataset_id, MultilayerPerceptronBagging multilayerPerceptronClassifierBagging){
+    	
+    	
+    	Double F1scoreMultilayerPerceptronBagging= multilayerPerceptronClassifierBagging.getF1Score();
+        Double AccuracyMultilayerPerceptronBagging = multilayerPerceptronClassifierBagging.getAccuracy();
+        Double SensivityMultilayerPerceptronBagging = multilayerPerceptronClassifierBagging.getSensivity();
+        Double SpecificityMultilayerPerceptronBagging = multilayerPerceptronClassifierBagging.getSpecificity();
+
+        Double weightedResultMultilayerPerceptronBagging = (F1scoreMultilayerPerceptronBagging + AccuracyMultilayerPerceptronBagging + SensivityMultilayerPerceptronBagging + SpecificityMultilayerPerceptronBagging)/4;
+
+
+        Method MultilayerPerceptronMethodBagging = new Method();
+
+        MultilayerPerceptronMethodBagging.setMethodName("Multilayer Perceptor");
+        MultilayerPerceptronMethodBagging.setResult(weightedResultMultilayerPerceptronBagging);
+        MultilayerPerceptronMethodBagging.setSplitName("Bagging");
+        MultilayerPerceptronMethodBagging.setF1Score(F1scoreMultilayerPerceptronBagging);
+        MultilayerPerceptronMethodBagging.setAccuracy(AccuracyMultilayerPerceptronBagging);
+        MultilayerPerceptronMethodBagging.setSensivity(SensivityMultilayerPerceptronBagging);
+        MultilayerPerceptronMethodBagging.setSpecificity(SpecificityMultilayerPerceptronBagging);
+
+        methodService.addMethod(dataset_id,MultilayerPerceptronMethodBagging);
+    }
 
 
     private void addMethodsBoosting(Long dataset_id, String fileName, String projectDir) throws InterruptedException{
@@ -346,6 +401,9 @@ public class MethodSupplierService {
 
         NaiveBayersBoosting naiveBayersBoosting = new NaiveBayersBoosting(projectDir + "/datasets/CSVDatasets/" + fileName);
         threads.add(naiveBayersBoosting);
+        
+        MultilayerPerceptronBoosting MLPClassifierBoosting = new MultilayerPerceptronBoosting(projectDir + "/datasets/CSVDatasets/" + fileName);
+        threads.add(MLPClassifierBoosting);
 
         for (Thread thread : threads) {
             thread.start();
@@ -357,6 +415,7 @@ public class MethodSupplierService {
         addKNNBoosting(dataset_id, knnClassifierBoosting);
         addRandomForestBoosting(dataset_id, randomForestClassifierBoosting);
         addNaiveBayersBoosting(dataset_id, naiveBayersBoosting);
+        addMLPBoosting(dataset_id, MLPClassifierBoosting);
     }
 
     public void addDecisionTreeBoosting(Long dataset_id, DTBoosting decisionTreeClassifierBoosting){
@@ -471,5 +530,29 @@ public class MethodSupplierService {
         naiveBayersMethodBoosting.setSpecificity(SpecificityNaiveBayersBoosting);
 
         methodService.addMethod(dataset_id,naiveBayersMethodBoosting);
+    }
+    
+    public void addMLPBoosting(Long dataset_id, MultilayerPerceptronBoosting MLPClassifierBoosting){
+    	
+    	Double F1scoreMultilayerPerceptronBoosting= MLPClassifierBoosting.getF1Score();
+        Double AccuracyMultilayerPerceptronBoosting = MLPClassifierBoosting.getAccuracy();
+        Double SensivityMultilayerPerceptronBoosting = MLPClassifierBoosting.getSensivity();
+        Double SpecificityMultilayerPerceptronBoosting = MLPClassifierBoosting.getSpecificity();
+
+        Double weightedResultMultilayerPerceptronBoosting = (F1scoreMultilayerPerceptronBoosting + AccuracyMultilayerPerceptronBoosting + SensivityMultilayerPerceptronBoosting + SpecificityMultilayerPerceptronBoosting)/4;
+
+
+        Method multilayerPerceptronMethodBoosting = new Method();
+
+        multilayerPerceptronMethodBoosting.setMethodName("Multilayer Perceptor");
+        multilayerPerceptronMethodBoosting.setResult(weightedResultMultilayerPerceptronBoosting);
+        multilayerPerceptronMethodBoosting.setSplitName("Boosting");
+        multilayerPerceptronMethodBoosting.setF1Score(F1scoreMultilayerPerceptronBoosting);
+        multilayerPerceptronMethodBoosting.setAccuracy(AccuracyMultilayerPerceptronBoosting);
+        multilayerPerceptronMethodBoosting.setSensivity(SensivityMultilayerPerceptronBoosting);
+        multilayerPerceptronMethodBoosting.setSpecificity(SpecificityMultilayerPerceptronBoosting);
+
+        methodService.addMethod(dataset_id,multilayerPerceptronMethodBoosting);
+    	
     }
 }
