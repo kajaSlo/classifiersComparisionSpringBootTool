@@ -65,7 +65,7 @@ public class MethodSupplierService {
         addKNNCrossValidation(dataset_id, knnClassifierCrossValidation);
         addRandomForestCrossValidation(dataset_id, randomForestClassifierCrossValidation);
         addNaiveBayersCrossValidation(dataset_id, naiveBayersClassifierCrossValidation);
-        addMLPCrossValidation(dataset_id, MLPClassifierCrossValidation);
+       // addMLPCrossValidation(dataset_id, MLPClassifierCrossValidation);
 
     }
 
@@ -216,7 +216,7 @@ public class MethodSupplierService {
         addKNNBagging(dataset_id, knnClassifierBagging);
         addRandomForestBagging(dataset_id, randomForestClassifierBagging);
         addNaiveBayersBagging(dataset_id, naiveBayersClassifierBagging);
-        addMLPBagging(dataset_id, multilayerPerceptronClassifierBagging);
+        //addMLPBagging(dataset_id, multilayerPerceptronClassifierBagging);
 
     }
 
@@ -415,7 +415,7 @@ public class MethodSupplierService {
         addKNNBoosting(dataset_id, knnClassifierBoosting);
         addRandomForestBoosting(dataset_id, randomForestClassifierBoosting);
         addNaiveBayersBoosting(dataset_id, naiveBayersBoosting);
-        addMLPBoosting(dataset_id, MLPClassifierBoosting);
+        //addMLPBoosting(dataset_id, MLPClassifierBoosting);
     }
 
     public void addDecisionTreeBoosting(Long dataset_id, DTBoosting decisionTreeClassifierBoosting){

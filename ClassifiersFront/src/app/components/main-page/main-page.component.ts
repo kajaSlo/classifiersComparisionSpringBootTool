@@ -9,6 +9,9 @@ import { DatasetService } from "src/app/services/dataset.service";
 })
 export class MainPageComponent implements OnInit {
   datasets: any;
+  bestResult: any;
+  successMsg: boolean = false;
+  errorMsg: boolean = false;
   constructor(private router: Router, private datasetService: DatasetService) {}
 
   ngOnInit() {
@@ -18,5 +21,32 @@ export class MainPageComponent implements OnInit {
 
       console.log(datasets);
     });
+  }
+
+  deleteDataset(id) {
+    if (confirm("Confirm deletion")) {
+      this.datasetService.deleteDatasetAndItsResults(id).subscribe(res => {
+        if (res == "Dataset deleted succesfully") {
+          this.successMsg = true;
+          setTimeout(
+            function() {
+              this.successMsg = false;
+            }.bind(this),
+            2000
+          );
+          this.datasetService.getAllDatasets().subscribe(datasets => {
+            this.datasetService.datasetBS.next(datasets);
+          });
+        } else {
+          this.errorMsg = true;
+          setTimeout(
+            function() {
+              this.errorMsg = false;
+            }.bind(this),
+            2000
+          );
+        }
+      });
+    }
   }
 }

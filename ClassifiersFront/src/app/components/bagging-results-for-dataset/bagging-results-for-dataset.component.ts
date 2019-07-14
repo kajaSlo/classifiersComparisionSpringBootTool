@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { Router, ActivatedRoute } from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
 import { MethodService } from "src/app/services/method.service";
 import { DatasetService } from "src/app/services/dataset.service";
 
@@ -12,9 +12,9 @@ export class BaggingResultsForDatasetComponent implements OnInit {
   method: any;
   param: any;
   datasetName: any;
+  accuracy: any;
 
   constructor(
-    private router: Router,
     private route: ActivatedRoute,
     private methodService: MethodService,
     private datasetService: DatasetService
@@ -28,6 +28,13 @@ export class BaggingResultsForDatasetComponent implements OnInit {
         .getBaggingMethodsForDataset(this.param)
         .subscribe(method => {
           this.method = method;
+
+          for (let methods of this.method) {
+            methods.accuracy = methods.accuracy * 100;
+            methods.sensivity = methods.sensivity * 100;
+            methods.specificity = methods.specificity * 100;
+            methods.f1Score = methods.f1Score * 100;
+          }
         });
     });
 

@@ -21,4 +21,10 @@ export class DatasetService {
       .get(" http://localhost:8080/api/dataset/" + id)
       .pipe(map(res => res.json()));
   }
+
+  deleteDatasetAndItsResults(id) {
+    return this.http
+      .delete("http://localhost:8080/api/dataset/" + id)
+      .pipe(map(res => res.text()));
+  }
 }

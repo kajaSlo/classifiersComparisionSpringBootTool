@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
 import { Http } from "@angular/http";
-import { BehaviorSubject } from "rxjs";
 import { map } from "rxjs/operators";
 
 @Injectable({
@@ -8,8 +7,6 @@ import { map } from "rxjs/operators";
 })
 export class MethodService {
   constructor(private http: Http) {}
-
-  // public datasetBS = new BehaviorSubject<string>(null);
 
   getMethodsForDataset(id) {
     return this.http
@@ -32,6 +29,12 @@ export class MethodService {
   getBoostingMethodsForDataset(id) {
     return this.http
       .get("http://localhost:8080/api/method/methods/boosting/" + id)
+      .pipe(map(res => res.json()));
+  }
+
+  getBestResultForDataset(id) {
+    return this.http
+      .get("http://localhost:8080/api/method/methods/bestResult/" + id)
       .pipe(map(res => res.json()));
   }
 }

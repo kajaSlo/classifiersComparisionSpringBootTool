@@ -12,6 +12,7 @@ import { CrossValidationResultsForDatasetComponent } from "./components/cross-va
 import { MainPageComponent } from "./components/main-page/main-page.component";
 import { BaggingResultsForDatasetComponent } from "./components/bagging-results-for-dataset/bagging-results-for-dataset.component";
 import { BoostingResultsForDatasetComponent } from "./components/boosting-results-for-dataset/boosting-results-for-dataset.component";
+import { BestResultComponent } from "./components/best-result/best-result.component";
 
 const appRoutes: Routes = [
   { path: "", component: MainPageComponent },
@@ -31,6 +32,10 @@ const appRoutes: Routes = [
   {
     path: "boostingResults/:id",
     component: BoostingResultsForDatasetComponent
+  },
+  {
+    path: "bestResult/:id",
+    component: BestResultComponent
   }
 ];
 
@@ -43,7 +48,8 @@ const appRoutes: Routes = [
     CrossValidationResultsForDatasetComponent,
     MainPageComponent,
     BaggingResultsForDatasetComponent,
-    BoostingResultsForDatasetComponent
+    BoostingResultsForDatasetComponent,
+    BestResultComponent
   ],
   imports: [
     BrowserModule,

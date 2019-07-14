@@ -66,7 +66,7 @@ public class MultilayerPerceptronBagging extends Thread implements DefaultDataSu
             MultilayerPerceptron model = new MultilayerPerceptron();
             model.setLearningRate(0.1);
             model.setMomentum(0.2);
-            model.setTrainingTime(3000);
+            model.setTrainingTime(500);
             model.setHiddenLayers("3");
             
             bagger.setClassifier(model);

@@ -1,0 +1,27 @@
+<br />
+<br />
+
+<a class="btn btn-primary" routerLink="/">Back to main page</a>
+
+<h3>Best result for dataset {{ datasetName }}</h3>
+<br />
+<table style="width:90%" class="table table-striped">
+  <tr>
+    <th>Method name:</th>
+    <th>Accuracy:</th>
+    <th>Sensivity:</th>
+    <th>Specificity:</th>
+    <th>F1Score:</th>
+    <th>Average of all results:</th>
+    <th>Split method used:</th>
+  </tr>
+  <tr>
+    <td>{{ bestResult?.methodName }}</td>
+    <td>{{ bestResult?.accuracy }}%</td>
+    <td>{{ bestResult?.sensivity }}%</td>
+    <td>{{ bestResult?.specificity }}%</td>
+    <td>{{ bestResult?.f1Score }}%</td>
+    <td>{{ bestResult?.result }}%</td>
+    <td>{{ bestResult?.splitName }}</td>
+  </tr>
+</table>

@@ -1,23 +1,30 @@
 package com.classifierscomparision.classifierscomparisiontool.controllers;
 
-import com.classifierscomparision.classifierscomparisiontool.models.Method;
-import com.classifierscomparision.classifierscomparisiontool.services.DatasetService;
-import com.classifierscomparision.classifierscomparisiontool.services.MethodService;
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-import javax.validation.Valid;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.classifierscomparision.classifierscomparisiontool.models.Method;
+import com.classifierscomparision.classifierscomparisiontool.services.MethodService;
 
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/method")
 public class MethodController {
-
-    @Autowired
-    private DatasetService datasetService;
+//
+//    @Autowired
+//    private DatasetService datasetService;
 
     @Autowired
     private MethodService methodService;
@@ -60,5 +67,10 @@ public class MethodController {
         return methodService.findBoostingMethodsByDatasetId(dataset_id);
     }
 
+    @GetMapping("/methods/bestResult/{dataset_id}")
+    public Method getDatasetMethodWithBestResult(@PathVariable Long dataset_id){
+
+        return methodService.findMethodWithTheBestResultByDatasetId(dataset_id);
+    }
 
 }

@@ -67,7 +67,7 @@ public class DatasetController {
     public ResponseEntity<?> deleteDataset(@PathVariable Long dataset_id){
         datasetService.deleteDatasetById(dataset_id);
 
-        return new ResponseEntity<String>("Dataset with id: " + dataset_id + "deleted succesfully", HttpStatus.OK);
+        return new ResponseEntity<String>("Dataset deleted succesfully", HttpStatus.OK);
     }
 
 

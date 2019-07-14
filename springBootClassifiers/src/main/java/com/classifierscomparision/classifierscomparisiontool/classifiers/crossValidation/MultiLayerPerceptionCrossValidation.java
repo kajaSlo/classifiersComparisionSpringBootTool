@@ -69,7 +69,7 @@ public class MultiLayerPerceptionCrossValidation extends Thread implements Defau
             MultilayerPerceptron model = buildmodel(dataset);
             model.setLearningRate(0.1);
             model.setMomentum(0.2);
-            model.setTrainingTime(2000);
+            model.setTrainingTime(500);
             model.setHiddenLayers("3");
             model.buildClassifier(dataset);
 

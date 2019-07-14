@@ -55,6 +55,11 @@ public class MethodService {
     public Iterable<Method> findBoostingMethodsByDatasetId(Long id){
         return methodRepository.findAllByDataset_IdAndSplitNameEqualsOrderByResultDesc(id, "Boosting");
     }
+    
+    public Method findMethodWithTheBestResultByDatasetId(Long id) {
+    	
+    	return methodRepository.findFirstByDataset_IdOrderByResultDesc(id);
+    }
 
 
 }
