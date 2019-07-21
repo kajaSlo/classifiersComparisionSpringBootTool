@@ -4,6 +4,7 @@ import com.classifierscomparision.classifierscomparisiontool.classifiers.crossVa
 import weka.classifiers.Evaluation;
 import weka.classifiers.meta.AdaBoostM1;
 import weka.classifiers.trees.J48;
+import weka.core.Debug;
 import weka.core.Instances;
 
 
@@ -17,10 +18,10 @@ public class DTBoosting extends Thread implements DefaultDataSupplier {
 
     String datasetDirectory= "";
 
-    public void makeEvaluation(Instances dataset, AdaBoostM1 m1) throws Exception{
-        Evaluation evaluation = new Evaluation(dataset);
+    public void makeEvaluation(Instances trainDataset, Instances testDataset, AdaBoostM1 m1) throws Exception{
+        Evaluation evaluation = new Evaluation(trainDataset);
 
-        evaluation.evaluateModel(m1, dataset);
+        evaluation.evaluateModel(m1, testDataset);
 
         Double F1Score = evaluation.weightedFMeasure();
         Double accuracy = evaluation.pctCorrect()/100;
@@ -61,6 +62,14 @@ public class DTBoosting extends Thread implements DefaultDataSupplier {
             Instances dataset = getDataset(datasetDirectory);
 
             dataset.setClassIndex(dataset.numAttributes()-1);
+            
+            int trainDatasetSize = (int) Math.round(dataset.numInstances() * 0.7);
+            int testDatasetSize = dataset.numInstances() - trainDatasetSize;
+
+            dataset.randomize(new Debug.Random(1));
+            
+            Instances trainDataset = new Instances(dataset, 0, trainDatasetSize);
+            Instances testDataset = new Instances(dataset, trainDatasetSize, testDatasetSize);
 
             AdaBoostM1 m1 = new AdaBoostM1();
 
@@ -70,7 +79,7 @@ public class DTBoosting extends Thread implements DefaultDataSupplier {
             m1.buildClassifier(dataset);
             model.buildClassifier(dataset);
 
-            makeEvaluation(dataset,m1);
+            makeEvaluation(trainDataset, testDataset,m1);
             System.out.println("\n");
 
         }catch(Exception e){

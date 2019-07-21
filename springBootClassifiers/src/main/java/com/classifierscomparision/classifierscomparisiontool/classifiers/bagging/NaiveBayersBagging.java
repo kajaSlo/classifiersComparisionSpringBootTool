@@ -4,6 +4,7 @@ import com.classifierscomparision.classifierscomparisiontool.classifiers.Default
 import weka.classifiers.Evaluation;
 import weka.classifiers.bayes.NaiveBayes;
 import weka.classifiers.meta.Bagging;
+import weka.core.Debug;
 import weka.core.Instances;
 
 
@@ -16,10 +17,10 @@ public class NaiveBayersBagging extends Thread implements DefaultDataSupplier {
 
     String datasetDirectory= "";
 
-    public void makeEvaluation(Instances dataset, Bagging bagger) throws Exception{
-        Evaluation evaluation = new Evaluation(dataset);
+    public void makeEvaluation(Instances trainDataset, Instances testDataset, Bagging bagger) throws Exception{
+        Evaluation evaluation = new Evaluation(trainDataset);
 
-        evaluation.evaluateModel(bagger, dataset);
+        evaluation.evaluateModel(bagger, testDataset);
 
         Double F1Score = evaluation.weightedFMeasure();
         Double accuracy = evaluation.pctCorrect()/100;
@@ -57,6 +58,16 @@ public class NaiveBayersBagging extends Thread implements DefaultDataSupplier {
             Instances dataset = getDataset(datasetDirectory);
 
             dataset.setClassIndex(dataset.numAttributes()-1);
+            
+            
+            int trainDatasetSize = (int) Math.round(dataset.numInstances() * 0.7);
+            int testDatasetSize = dataset.numInstances() - trainDatasetSize;
+
+            dataset.randomize(new Debug.Random(1));
+            
+            Instances trainDataset = new Instances(dataset, 0, trainDatasetSize);
+            Instances testDataset = new Instances(dataset, trainDatasetSize, testDatasetSize);
+
 
             Bagging bagger = new Bagging();
 
@@ -66,7 +77,7 @@ public class NaiveBayersBagging extends Thread implements DefaultDataSupplier {
             bagger.buildClassifier(dataset);
             model.buildClassifier(dataset);
 
-            makeEvaluation(dataset,bagger);
+            makeEvaluation(trainDataset, testDataset, bagger);
             System.out.println("\n");
 
 
