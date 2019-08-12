@@ -1,12 +1,11 @@
-package com.classifierscomparision.classifierscomparisiontool.classifiers;
+package src.main.java.com.classifierscomparision.classifierscomparisiontool.classifiers;
 
-import weka.core.Instances;
-import weka.core.converters.ConverterUtils;
 import weka.core.Instances;
 import weka.core.converters.CSVLoader;
+
 import java.io.File;
 
-public interface DefaultDataSupplier{
+public interface DefaultDataSupplier {
     default public Instances getDataset(String datasetDirectory) throws Exception{
 
         CSVLoader loader = new CSVLoader();

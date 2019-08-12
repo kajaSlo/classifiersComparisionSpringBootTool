@@ -1,13 +1,12 @@
 package com.classifierscomparision.classifierscomparisiontool.classifiers.AdaBoost;
 
-import com.classifierscomparision.classifierscomparisiontool.classifiers.DefaultDataSupplier;
-import weka.classifiers.Evaluation;
+import com.classifierscomparision.classifierscomparisiontool.classifiers.crossValidation.DefaultDataSupplier;import weka.classifiers.Evaluation;
 import weka.classifiers.lazy.IBk;
 import weka.classifiers.meta.AdaBoostM1;
 import weka.core.Debug;
 import weka.core.Instances;
 
-public class KNNBoosting extends Thread implements DefaultDataSupplier {
+public class KNNBoosting extends Thread implements DefaultDataSupplier{
 
     private volatile Double F1score;
     private volatile Double Accuracy;
