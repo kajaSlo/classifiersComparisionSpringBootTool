@@ -8,12 +8,6 @@ import { map } from "rxjs/operators";
 export class MethodService {
   constructor(private http: Http) {}
 
-  getMethodsForDataset(id) {
-    return this.http
-      .get("http://localhost:8080/api/method/methods/" + id)
-      .pipe(map(res => res.json()));
-  }
-
   getCrossValidationMethodsForDataset(id) {
     return this.http
       .get("http://localhost:8080/api/method/methods/crossValidation/" + id)

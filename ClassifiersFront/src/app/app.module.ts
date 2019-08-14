@@ -7,19 +7,15 @@ import { MethodService } from "./services/method.service";
 import { HttpModule } from "@angular/http";
 import { RouterModule, Routes } from "@angular/router";
 import { UploadComponentComponent } from "./components/upload-component/upload-component.component";
-import { ResultsForUploadedFileComponent } from "./components/results-for-uploaded-file/results-for-uploaded-file.component";
 import { CrossValidationResultsForDatasetComponent } from "./components/cross-validation-results-for-dataset/cross-validation-results-for-dataset.component";
 import { MainPageComponent } from "./components/main-page/main-page.component";
 import { BaggingResultsForDatasetComponent } from "./components/bagging-results-for-dataset/bagging-results-for-dataset.component";
 import { BoostingResultsForDatasetComponent } from "./components/boosting-results-for-dataset/boosting-results-for-dataset.component";
 import { BestResultComponent } from "./components/best-result/best-result.component";
+import { DatasetService } from "./services/dataset.service";
 
 const appRoutes: Routes = [
   { path: "", component: MainPageComponent },
-  {
-    path: "uploadedFileResults/:id",
-    component: ResultsForUploadedFileComponent
-  },
   {
     path: "crossValidationResuls/:id",
     component: CrossValidationResultsForDatasetComponent
@@ -44,7 +40,6 @@ const appRoutes: Routes = [
     AppComponent,
     FileSelectDirective,
     UploadComponentComponent,
-    ResultsForUploadedFileComponent,
     CrossValidationResultsForDatasetComponent,
     MainPageComponent,
     BaggingResultsForDatasetComponent,
@@ -57,7 +52,7 @@ const appRoutes: Routes = [
     HttpModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [MethodService],
+  providers: [MethodService, DatasetService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
