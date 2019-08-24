@@ -1,5 +1,4 @@
 import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
 import { DatasetService } from "src/app/services/dataset.service";
 
 @Component({
@@ -9,17 +8,14 @@ import { DatasetService } from "src/app/services/dataset.service";
 })
 export class MainPageComponent implements OnInit {
   datasets: any;
-  bestResult: any;
   successMsg: boolean = false;
   errorMsg: boolean = false;
-  constructor(private router: Router, private datasetService: DatasetService) {}
+  constructor(private datasetService: DatasetService) {}
 
   ngOnInit() {
     this.datasetService.getAllDatasets().subscribe(datasets => {
       this.datasetService.datasetBS.next(datasets);
       this.datasets = this.datasetService.datasetBS;
-
-      console.log(datasets);
     });
   }
 

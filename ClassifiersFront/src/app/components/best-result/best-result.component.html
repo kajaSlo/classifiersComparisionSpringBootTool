@@ -17,11 +17,11 @@
   </tr>
   <tr>
     <td>{{ bestResult?.methodName }}</td>
-    <td>{{ bestResult?.accuracy }}%</td>
-    <td>{{ bestResult?.sensivity }}%</td>
-    <td>{{ bestResult?.specificity }}%</td>
-    <td>{{ bestResult?.f1Score }}%</td>
-    <td>{{ bestResult?.result }}%</td>
+    <td>{{ bestResult?.accuracy | number: "1.2-2" }}%</td>
+    <td>{{ bestResult?.sensivity | number: "1.2-2" }}%</td>
+    <td>{{ bestResult?.specificity | number: "1.2-2" }}%</td>
+    <td>{{ bestResult?.f1Score | number: "1.2-2" }}%</td>
+    <td>{{ bestResult?.result | number: "1.2-2" }}%</td>
     <td>{{ bestResult?.splitName }}</td>
   </tr>
 </table>

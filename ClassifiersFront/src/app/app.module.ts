@@ -1,7 +1,6 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
 import { FileSelectDirective } from "ng2-file-upload";
-import { FormsModule } from "@angular/forms";
 import { AppComponent } from "./app.component";
 import { MethodService } from "./services/method.service";
 import { HttpModule } from "@angular/http";
@@ -46,12 +45,7 @@ const appRoutes: Routes = [
     BoostingResultsForDatasetComponent,
     BestResultComponent
   ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    HttpModule,
-    RouterModule.forRoot(appRoutes)
-  ],
+  imports: [BrowserModule, HttpModule, RouterModule.forRoot(appRoutes)],
   providers: [MethodService, DatasetService],
   bootstrap: [AppComponent]
 })

@@ -11,7 +11,6 @@ import { DatasetService } from "src/app/services/dataset.service";
 export class BestResultComponent implements OnInit {
   bestResult: any;
   param: String;
-  accuracy: any;
   datasetName: String;
 
   constructor(

@@ -20,7 +20,6 @@
     <th>Get boosting results</th>
     <th>Get best result</th>
     <th>Delete dataset</th>
-    <!-- <th>Delete</th> -->
   </tr>
 
   <tr *ngFor="let dataset of datasets?.value">
@@ -35,18 +34,12 @@
     <td>
       <a routerLink="/baggingResults/{{ dataset.id }}">Bagging</a>
     </td>
-
     <td>
       <a routerLink="/boostingResults/{{ dataset.id }}">Boosting</a>
     </td>
-
     <td>
       <a routerLink="bestResult/{{ dataset.id }}">Best result</a>
     </td>
-    <!-- <td>
-          <a (click)="deleteProduct(product._id)" routerLink="/admin/products">Delete</a>
-      </td> -->
-
     <td>
       <a (click)="deleteDataset(dataset.id)" routerLink="/">Delete</a>
     </td>

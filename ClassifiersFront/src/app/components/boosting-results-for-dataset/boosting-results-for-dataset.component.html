@@ -13,11 +13,11 @@
     <th>Specificity:</th>
     <th>F1Score:</th>
   </tr>
-  <tr *ngFor="let methodResults of method">
+  <tr *ngFor="let methodResults of methods">
     <td>{{ methodResults.methodName }}</td>
-    <td>{{ methodResults.accuracy }}%</td>
-    <td>{{ methodResults.sensivity }}%</td>
-    <td>{{ methodResults.specificity }}%</td>
-    <td>{{ methodResults.f1Score }}%</td>
+    <td>{{ methodResults.accuracy | number: "1.2-2" }}%</td>
+    <td>{{ methodResults.sensivity | number: "1.2-2" }}%</td>
+    <td>{{ methodResults.specificity | number: "1.2-2" }}%</td>
+    <td>{{ methodResults.f1Score | number: "1.2-2" }}%</td>
   </tr>
 </table>

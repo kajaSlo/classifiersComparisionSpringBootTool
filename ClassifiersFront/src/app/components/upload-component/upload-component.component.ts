@@ -1,9 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { BehaviorSubject } from "rxjs";
-import {
-  FileUploader,
-  FileSelectDirective
-} from "ng2-file-upload/ng2-file-upload";
+import { FileUploader } from "ng2-file-upload/ng2-file-upload";
 
 const uploadUrl = "http://localhost:8080/api/dataset/upload";
 @Component({
@@ -21,8 +17,10 @@ export class UploadComponentComponent implements OnInit {
     this.uploader.onAfterAddingFile = file => {
       file.withCredentials = false;
     };
+    this.uploader.onCompleteItem = () => {
+      alert("File uploaded successfully");
+    };
   }
-
   refresh(): void {
     window.location.reload();
   }

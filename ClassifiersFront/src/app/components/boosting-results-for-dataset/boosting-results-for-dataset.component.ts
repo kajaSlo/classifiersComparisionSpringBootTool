@@ -9,9 +9,10 @@ import { DatasetService } from "src/app/services/dataset.service";
   styleUrls: ["./boosting-results-for-dataset.component.css"]
 })
 export class BoostingResultsForDatasetComponent implements OnInit {
-  method: any;
+  methods: any;
   param: any;
   datasetName: any;
+
   constructor(
     private route: ActivatedRoute,
     private methodService: MethodService,
@@ -24,14 +25,14 @@ export class BoostingResultsForDatasetComponent implements OnInit {
 
       this.methodService
         .getBoostingMethodsForDataset(this.param)
-        .subscribe(method => {
-          this.method = method;
+        .subscribe(methods => {
+          this.methods = methods;
 
-          for (let methods of this.method) {
-            methods.accuracy = methods.accuracy * 100;
-            methods.sensivity = methods.sensivity * 100;
-            methods.specificity = methods.specificity * 100;
-            methods.f1Score = methods.f1Score * 100;
+          for (let method of this.methods) {
+            method.accuracy = method.accuracy * 100;
+            method.sensivity = method.sensivity * 100;
+            method.specificity = method.specificity * 100;
+            method.f1Score = method.f1Score * 100;
           }
         });
     });
