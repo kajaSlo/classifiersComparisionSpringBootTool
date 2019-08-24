@@ -1,27 +1,34 @@
 package com.classifierscomparision.classifierscomparisiontool.controllers;
 
-import com.classifierscomparision.classifierscomparisiontool.models.Dataset;
-import com.classifierscomparision.classifierscomparisiontool.models.Method;
-import com.classifierscomparision.classifierscomparisiontool.services.DatasetService;
-import com.classifierscomparision.classifierscomparisiontool.services.MethodService;
-import com.classifierscomparision.classifierscomparisiontool.services.MethodSupplierService;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Optional;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.io.File;
+import com.classifierscomparision.classifierscomparisiontool.models.Dataset;
+import com.classifierscomparision.classifierscomparisiontool.services.DatasetService;
+import com.classifierscomparision.classifierscomparisiontool.services.MethodSupplierService;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -41,10 +48,9 @@ public class DatasetController {
         if(result.hasErrors()){
            return new ResponseEntity<String>("Invalid Dataset Object", HttpStatus.BAD_REQUEST);
         }
-        Dataset newDataset = datasetService.saveOrUpdateDataset(dataset);
+        datasetService.saveOrUpdateDataset(dataset);
         return new ResponseEntity<Dataset>(dataset, HttpStatus.CREATED);
     }
-
 
     @GetMapping("/{dataset_id}")
     public ResponseEntity<?> getDatasetById(@PathVariable Long dataset_id){
@@ -70,7 +76,6 @@ public class DatasetController {
         return new ResponseEntity<String>("Dataset deleted succesfully", HttpStatus.OK);
     }
 
-
     @RequestMapping(value="/upload", method= RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Object> uploadFile (@RequestParam("file") MultipartFile file) throws InterruptedException{
         try {
@@ -82,13 +87,11 @@ public class DatasetController {
 
             Dataset dataset = new Dataset(file.getOriginalFilename());
 
-            Dataset newDataset = datasetService.saveOrUpdateDataset(dataset);
+            datasetService.saveOrUpdateDataset(dataset);
 
-            Long uploadedDatasetId = newDataset.getId();
-
+            Long uploadedDatasetId = dataset.getId();
 
             methodSupplier.addMethodsForDataset(uploadedDatasetId, file.getOriginalFilename());
-
 
             return new ResponseEntity<>(uploadedDatasetId, HttpStatus.OK);
 

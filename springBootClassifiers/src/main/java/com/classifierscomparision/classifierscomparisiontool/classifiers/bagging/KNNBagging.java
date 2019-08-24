@@ -8,7 +8,6 @@ import weka.classifiers.meta.Bagging;
 import weka.core.Debug;
 import weka.core.Instances;
 
-
 public class KNNBagging extends Thread implements DefaultDataSupplier {
 
     private volatile Double F1score;
@@ -38,7 +37,6 @@ public class KNNBagging extends Thread implements DefaultDataSupplier {
         this.datasetDirectory = datasetDirectory;
     }
 
-
     public Double getF1Score() {
         return F1score;
     }
@@ -54,7 +52,6 @@ public class KNNBagging extends Thread implements DefaultDataSupplier {
 
     @Override
     public void run() {
-
         try {
             Instances dataset = getDataset(datasetDirectory);
 
@@ -74,12 +71,9 @@ public class KNNBagging extends Thread implements DefaultDataSupplier {
             model.setKNN(3);
             bagger.setClassifier(model);
             bagger.setNumIterations(25);
-            bagger.buildClassifier(dataset);
-            model.buildClassifier(dataset);
+            bagger.buildClassifier(trainDataset);
 
             makeEvaluation(trainDataset, testDataset,bagger);
-            System.out.println("\n");
-
 
         }catch(Exception e){
             System.out.println(e);

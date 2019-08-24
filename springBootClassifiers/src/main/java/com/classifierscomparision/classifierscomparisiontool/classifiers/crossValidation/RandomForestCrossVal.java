@@ -2,7 +2,6 @@ package com.classifierscomparision.classifierscomparisiontool.classifiers.crossV
 
 import com.classifierscomparision.classifierscomparisiontool.classifiers.DefaultDataSupplier;
 import weka.classifiers.Evaluation;
-import weka.classifiers.functions.LibSVM;
 import weka.classifiers.trees.RandomForest;
 import weka.core.Instances;
 
@@ -59,20 +58,16 @@ public class RandomForestCrossVal extends Thread implements DefaultDataSupplier 
 
     @Override
     public void run() {
-
         try {
             Instances dataset = getDataset(datasetDirectory);
 
             RandomForest model = buildmodel(dataset);
             model.setNumIterations(20); //the same as set num trees
-            model.buildClassifier(dataset);
 
             makeEvaluation(dataset, model);
-            System.out.println("\n");
 
         }catch(Exception e){
             System.out.println(e);
         }
-
     }
 }

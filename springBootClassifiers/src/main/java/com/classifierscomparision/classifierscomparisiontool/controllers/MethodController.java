@@ -13,22 +13,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.classifierscomparision.classifierscomparisiontool.models.Method;
 import com.classifierscomparision.classifierscomparisiontool.services.MethodService;
-
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/method")
 public class MethodController {
-//
-//    @Autowired
-//    private DatasetService datasetService;
 
     @Autowired
     private MethodService methodService;
-
 
     @PostMapping("/{dataset_id}")
     public ResponseEntity<?> addMethodToDataset(@Valid @RequestBody Method method, BindingResult result, @PathVariable Long dataset_id){
@@ -44,7 +38,6 @@ public class MethodController {
 
     @GetMapping("/methods/{dataset_id}")
     public Iterable<Method> getDatasetMethods(@PathVariable Long dataset_id){
-
 
         return methodService.findDatasetById(dataset_id);
     }
@@ -72,5 +65,4 @@ public class MethodController {
 
         return methodService.findMethodWithTheBestResultByDatasetId(dataset_id);
     }
-
 }

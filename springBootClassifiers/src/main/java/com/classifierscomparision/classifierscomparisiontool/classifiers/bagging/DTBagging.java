@@ -1,20 +1,14 @@
 package com.classifierscomparision.classifierscomparisiontool.classifiers.bagging;
 
-import com.classifierscomparision.classifierscomparisiontool.classifiers.crossValidation.DefaultDataSupplier;
+import com.classifierscomparision.classifierscomparisiontool.classifiers.DefaultDataSupplier;
+
 import weka.classifiers.Evaluation;
-import weka.classifiers.meta.AdaBoostM1;
 import weka.classifiers.meta.Bagging;
 import weka.classifiers.trees.J48;
 import weka.core.Debug;
 import weka.core.Instances;
-import weka.filters.Filter;
-import weka.filters.unsupervised.attribute.Normalize;
-
-import java.util.Random;
-
 
 public class DTBagging extends Thread implements DefaultDataSupplier {
-
 
     private volatile Double F1score;
     private volatile Double Accuracy;
@@ -37,14 +31,11 @@ public class DTBagging extends Thread implements DefaultDataSupplier {
         this.Accuracy=accuracy;
         this.Sensivity=sensivity;
         this.Specificity=specificity;
-
-
     }
 
     public DTBagging(String datasetDirectory) {
         this.datasetDirectory = datasetDirectory;
     }
-
 
     public Double getF1Score() {
         return F1score;
@@ -71,18 +62,10 @@ public class DTBagging extends Thread implements DefaultDataSupplier {
 
             dataset.setClassIndex(dataset.numAttributes()-1);
             
-            
             int trainDatasetSize = (int) Math.round(dataset.numInstances() * 0.7);
             int testDatasetSize = dataset.numInstances() - trainDatasetSize;
 
             dataset.randomize(new Debug.Random(1));
-//            Filter filter = new Normalize();
-//            
-//            filter.setInputFormat(dataset);
-//            Instances datasetnor = Filter.useFilter(dataset, filter);
-//
-//            Instances traindataset = new Instances(datasetnor, 0, trainSize);
-//            Instances testdataset = new Instances(datasetnor, trainSize, testSize);
             
             Instances trainDataset = new Instances(dataset, 0, trainDatasetSize);
             Instances testDataset = new Instances(dataset, trainDatasetSize, testDatasetSize);
@@ -92,16 +75,13 @@ public class DTBagging extends Thread implements DefaultDataSupplier {
             J48 model = new J48();
             bagger.setClassifier(model);
             bagger.setNumIterations(25);
-            bagger.buildClassifier(dataset);
-            model.buildClassifier(dataset);
+            bagger.buildClassifier(trainDataset);
 
             makeEvaluation(trainDataset,testDataset, bagger);
-            System.out.println("\n");
 
         }catch(Exception e){
             System.out.println(e);
         }
-
     }
 }
 

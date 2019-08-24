@@ -2,14 +2,10 @@ package com.classifierscomparision.classifierscomparisiontool.classifiers.crossV
 
 import com.classifierscomparision.classifierscomparisiontool.classifiers.DefaultDataSupplier;
 import weka.classifiers.Evaluation;
-import weka.classifiers.bayes.NaiveBayes;
-import weka.classifiers.functions.LibSVM;
 import weka.classifiers.functions.MultilayerPerceptron;
 import weka.core.Instances;
 
 import java.util.Random;
-
-
 
 public class MultiLayerPerceptionCrossValidation extends Thread implements DefaultDataSupplier {
 
@@ -62,7 +58,6 @@ public class MultiLayerPerceptionCrossValidation extends Thread implements Defau
 
     @Override
     public void run() {
-
         try {
             Instances dataset = getDataset(datasetDirectory);
 
@@ -71,14 +66,11 @@ public class MultiLayerPerceptionCrossValidation extends Thread implements Defau
             model.setMomentum(0.2);
             model.setTrainingTime(500);
             model.setHiddenLayers("3");
-            model.buildClassifier(dataset);
 
             makeEvaluation(dataset, model);
-            System.out.println("\n");
 
         }catch(Exception e){
             System.out.println(e);
         }
-
     }
 }

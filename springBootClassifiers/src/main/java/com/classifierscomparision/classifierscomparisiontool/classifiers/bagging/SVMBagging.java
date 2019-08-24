@@ -37,7 +37,6 @@ public class SVMBagging extends Thread implements DefaultDataSupplier {
         this.datasetDirectory = datasetDirectory;
     }
 
-
     public Double getF1Score() {
         return F1score;
     }
@@ -56,7 +55,6 @@ public class SVMBagging extends Thread implements DefaultDataSupplier {
 
     @Override
     public void run() {
-
         try {
             Instances dataset = getDataset(datasetDirectory);
             dataset.setClassIndex(dataset.numAttributes()-1);
@@ -74,16 +72,12 @@ public class SVMBagging extends Thread implements DefaultDataSupplier {
             LibSVM model = new LibSVM();
             bagger.setClassifier(model);
             bagger.setNumIterations(25);
-            bagger.buildClassifier(dataset);
-            model.buildClassifier(dataset);
+            bagger.buildClassifier(trainDataset);
 
             makeEvaluation(trainDataset, testDataset, bagger);
-            System.out.println("\n");
-
 
         }catch(Exception e){
             System.out.println(e);
         }
-
     }
 }

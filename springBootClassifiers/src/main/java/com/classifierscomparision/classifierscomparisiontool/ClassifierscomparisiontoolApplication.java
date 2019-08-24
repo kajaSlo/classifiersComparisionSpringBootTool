@@ -9,5 +9,4 @@ public class ClassifierscomparisiontoolApplication {
     public static void main(String[] args) {
         SpringApplication.run(ClassifierscomparisiontoolApplication.class, args);
     }
-
 }

@@ -37,7 +37,6 @@ public class MultilayerPerceptronBagging extends Thread implements DefaultDataSu
         this.datasetDirectory = datasetDirectory;
     }
 
-
     public Double getF1Score() {
         return F1score;
     }
@@ -56,7 +55,6 @@ public class MultilayerPerceptronBagging extends Thread implements DefaultDataSu
 
     @Override
     public void run() {
-
         try {
             Instances dataset = getDataset(datasetDirectory);
 
@@ -70,7 +68,6 @@ public class MultilayerPerceptronBagging extends Thread implements DefaultDataSu
             Instances trainDataset = new Instances(dataset, 0, trainDatasetSize);
             Instances testDataset = new Instances(dataset, trainDatasetSize, testDatasetSize);
 
-
             Bagging bagger = new Bagging();
 
             MultilayerPerceptron model = new MultilayerPerceptron();
@@ -81,15 +78,12 @@ public class MultilayerPerceptronBagging extends Thread implements DefaultDataSu
             
             bagger.setClassifier(model);
             bagger.setNumIterations(25);
-            bagger.buildClassifier(dataset);
-            model.buildClassifier(dataset);
+            bagger.buildClassifier(trainDataset);
 
             makeEvaluation(trainDataset, testDataset, bagger);
-            System.out.println("\n");
-
 
         }catch(Exception e){
-            System.out.println("AAAAA" + e);
+            System.out.println(e);
         }
 
     }

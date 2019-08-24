@@ -5,7 +5,6 @@ import com.classifierscomparision.classifierscomparisiontool.models.Dataset;
 import com.classifierscomparision.classifierscomparisiontool.repositories.DatasetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.Optional;
 
 @Service
@@ -31,12 +30,9 @@ public class DatasetService {
        Optional<Dataset> dataset = datasetRepository.findById(id);
 
        if(dataset.isPresent()){
-
            datasetRepository.deleteById(id);
        }else{
-
            throw new DatasetIdException("Dataset with id: "  + id + "doesn't exist");
        }
-
     }
 }

@@ -36,7 +36,6 @@ public class NaiveBayersBoosting extends Thread implements DefaultDataSupplier {
         this.datasetDirectory = datasetDirectory;
     }
 
-
     public Double getF1Score() {
         return F1score;
     }
@@ -52,7 +51,6 @@ public class NaiveBayersBoosting extends Thread implements DefaultDataSupplier {
 
     @Override
     public void run() {
-
         try {
             Instances dataset = getDataset(datasetDirectory);
 
@@ -71,8 +69,7 @@ public class NaiveBayersBoosting extends Thread implements DefaultDataSupplier {
             NaiveBayes model = new NaiveBayes();
             m1.setClassifier(model);
             m1.setNumIterations(25);
-            m1.buildClassifier(dataset);
-            model.buildClassifier(dataset);
+            m1.buildClassifier(trainDataset);
 
             makeEvaluation(trainDataset, testDataset,m1);
 

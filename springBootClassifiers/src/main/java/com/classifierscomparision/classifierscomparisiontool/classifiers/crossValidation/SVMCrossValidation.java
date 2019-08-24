@@ -7,7 +7,6 @@ import weka.core.Instances;
 
 import java.util.Random;
 
-
 public class SVMCrossValidation extends Thread implements DefaultDataSupplier {
 
     private volatile Double F1score;
@@ -64,14 +63,11 @@ public class SVMCrossValidation extends Thread implements DefaultDataSupplier {
             Instances dataset = getDataset(datasetDirectory);
 
             LibSVM model = buildmodel(dataset);
-            model.buildClassifier(dataset);
 
             makeEvaluation(dataset, model);
-            System.out.println("\n");
 
         }catch(Exception e){
             System.out.println(e);
         }
-
     }
 }

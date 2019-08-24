@@ -2,7 +2,6 @@ package com.classifierscomparision.classifierscomparisiontool.classifiers.crossV
 
 import com.classifierscomparision.classifierscomparisiontool.classifiers.DefaultDataSupplier;
 import weka.classifiers.Evaluation;
-import weka.classifiers.functions.LibSVM;
 import weka.classifiers.lazy.IBk;
 import weka.core.Instances;
 
@@ -59,13 +58,11 @@ public class KNNCrossValidation extends Thread implements DefaultDataSupplier {
 
     @Override
     public void run() {
-
         try {
             Instances dataset = getDataset(datasetDirectory);
 
             IBk model = buildmodel(dataset);
             model.setKNN(3);
-            model.buildClassifier(dataset);
 
             makeEvaluation(dataset, model);
             System.out.println("\n");
@@ -73,6 +70,5 @@ public class KNNCrossValidation extends Thread implements DefaultDataSupplier {
         }catch(Exception e){
             System.out.println(e);
         }
-
     }
 }

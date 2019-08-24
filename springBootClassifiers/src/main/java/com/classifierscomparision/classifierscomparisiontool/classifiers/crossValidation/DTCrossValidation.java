@@ -1,9 +1,12 @@
 package com.classifierscomparision.classifierscomparisiontool.classifiers.crossValidation;
 
+import java.util.Random;
+
+import com.classifierscomparision.classifierscomparisiontool.classifiers.DefaultDataSupplier;
+
 import weka.classifiers.Evaluation;
 import weka.classifiers.trees.J48;
 import weka.core.Instances;
-import java.util.Random;
 
 public class DTCrossValidation extends Thread implements DefaultDataSupplier {
 
@@ -27,8 +30,6 @@ public class DTCrossValidation extends Thread implements DefaultDataSupplier {
         model.setNumFolds(10);
         evaluation.crossValidateModel(model, dataset, model.getNumFolds(), new Random(1));
 
-        System.out.println("Folds number used: " + model.getNumFolds());
-
         Double F1Score = evaluation.weightedFMeasure();
         Double accuracy = evaluation.pctCorrect()/100;
         Double sensivity = evaluation.weightedRecall();
@@ -40,11 +41,9 @@ public class DTCrossValidation extends Thread implements DefaultDataSupplier {
         this.Specificity=specificity;
     }
 
-
     public DTCrossValidation(String datasetDirectory) {
         this.datasetDirectory = datasetDirectory;
     }
-
 
     public Double getF1Score() {
         return F1score;
@@ -64,20 +63,15 @@ public class DTCrossValidation extends Thread implements DefaultDataSupplier {
 
     @Override
     public void run() {
-
         try {
-
             Instances dataset = getDataset(datasetDirectory);
 
             J48 model = buildmodel(dataset);
-            model.buildClassifier(dataset);
 
             makeEvaluation(dataset, model);
-            System.out.println("\n");
 
         }catch(Exception e){
             System.out.println(e);
         }
-
     }
 }

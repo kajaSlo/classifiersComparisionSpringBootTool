@@ -37,7 +37,6 @@ public class RandomForestBoosting extends Thread implements DefaultDataSupplier 
         this.datasetDirectory = datasetDirectory;
     }
 
-
     public Double getF1Score() {
         return F1score;
     }
@@ -56,7 +55,6 @@ public class RandomForestBoosting extends Thread implements DefaultDataSupplier 
 
     @Override
     public void run() {
-
         try {
             Instances dataset = getDataset(datasetDirectory);
 
@@ -76,12 +74,9 @@ public class RandomForestBoosting extends Thread implements DefaultDataSupplier 
             model.setNumIterations(20);
             m1.setClassifier(model);
             m1.setNumIterations(25);
-            m1.buildClassifier(dataset);
-            model.buildClassifier(dataset);
+            m1.buildClassifier(trainDataset); 
 
             makeEvaluation(trainDataset, testDataset,m1);
-            System.out.println("\n");
-
 
         }catch(Exception e){
             System.out.println(e);

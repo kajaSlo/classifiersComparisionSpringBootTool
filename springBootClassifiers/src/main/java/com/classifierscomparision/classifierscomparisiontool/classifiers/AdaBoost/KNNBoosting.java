@@ -1,12 +1,13 @@
 package com.classifierscomparision.classifierscomparisiontool.classifiers.AdaBoost;
 
-import com.classifierscomparision.classifierscomparisiontool.classifiers.crossValidation.DefaultDataSupplier;import weka.classifiers.Evaluation;
+import com.classifierscomparision.classifierscomparisiontool.classifiers.DefaultDataSupplier;
+import weka.classifiers.Evaluation;
 import weka.classifiers.lazy.IBk;
 import weka.classifiers.meta.AdaBoostM1;
 import weka.core.Debug;
 import weka.core.Instances;
 
-public class KNNBoosting extends Thread implements DefaultDataSupplier{
+public class KNNBoosting extends Thread implements DefaultDataSupplier {
 
     private volatile Double F1score;
     private volatile Double Accuracy;
@@ -19,7 +20,6 @@ public class KNNBoosting extends Thread implements DefaultDataSupplier{
         Evaluation evaluation = new Evaluation(trainDataset);
 
         evaluation.evaluateModel(m1, testDataset);
-
 
         Double F1Score = evaluation.weightedFMeasure();
         Double accuracy = evaluation.pctCorrect()/100;
@@ -35,7 +35,6 @@ public class KNNBoosting extends Thread implements DefaultDataSupplier{
     public KNNBoosting(String datasetDirectory) {
         this.datasetDirectory = datasetDirectory;
     }
-
 
     public Double getF1Score() {
         return F1score;
@@ -55,7 +54,6 @@ public class KNNBoosting extends Thread implements DefaultDataSupplier{
 
     @Override
     public void run() {
-
         try {
             Instances dataset = getDataset(datasetDirectory);
 
@@ -75,12 +73,9 @@ public class KNNBoosting extends Thread implements DefaultDataSupplier{
             model.setKNN(3);
             m1.setClassifier(model);
             m1.setNumIterations(25);
-            m1.buildClassifier(dataset);
-            model.buildClassifier(dataset);
-
+            m1.buildClassifier(trainDataset);
+   
             makeEvaluation(trainDataset, testDataset,m1);
-            System.out.println("\n");
-
 
         }catch(Exception e){
             System.out.println(e);

@@ -3,12 +3,9 @@ package com.classifierscomparision.classifierscomparisiontool.classifiers.crossV
 import com.classifierscomparision.classifierscomparisiontool.classifiers.DefaultDataSupplier;
 import weka.classifiers.Evaluation;
 import weka.classifiers.bayes.NaiveBayes;
-import weka.classifiers.functions.LibSVM;
 import weka.core.Instances;
 
 import java.util.Random;
-
-
 
 public class NaiveBayersCrossValidation extends Thread implements DefaultDataSupplier {
 
@@ -61,12 +58,10 @@ public class NaiveBayersCrossValidation extends Thread implements DefaultDataSup
 
     @Override
     public void run() {
-
         try {
             Instances dataset = getDataset(datasetDirectory);
 
             NaiveBayes model = buildmodel(dataset);
-            model.buildClassifier(dataset);
 
             makeEvaluation(dataset, model);
             System.out.println("\n");
@@ -74,6 +69,5 @@ public class NaiveBayersCrossValidation extends Thread implements DefaultDataSup
         }catch(Exception e){
             System.out.println(e);
         }
-
     }
 }

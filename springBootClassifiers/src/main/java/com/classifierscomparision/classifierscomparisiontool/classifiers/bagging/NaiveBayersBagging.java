@@ -7,7 +7,6 @@ import weka.classifiers.meta.Bagging;
 import weka.core.Debug;
 import weka.core.Instances;
 
-
 public class NaiveBayersBagging extends Thread implements DefaultDataSupplier {
 
     private volatile Double F1score;
@@ -37,7 +36,6 @@ public class NaiveBayersBagging extends Thread implements DefaultDataSupplier {
         this.datasetDirectory = datasetDirectory;
     }
 
-
     public Double getF1Score() {
         return F1score;
     }
@@ -53,12 +51,10 @@ public class NaiveBayersBagging extends Thread implements DefaultDataSupplier {
 
     @Override
     public void run() {
-
         try {
             Instances dataset = getDataset(datasetDirectory);
 
-            dataset.setClassIndex(dataset.numAttributes()-1);
-            
+            dataset.setClassIndex(dataset.numAttributes()-1);   
             
             int trainDatasetSize = (int) Math.round(dataset.numInstances() * 0.7);
             int testDatasetSize = dataset.numInstances() - trainDatasetSize;
@@ -68,22 +64,17 @@ public class NaiveBayersBagging extends Thread implements DefaultDataSupplier {
             Instances trainDataset = new Instances(dataset, 0, trainDatasetSize);
             Instances testDataset = new Instances(dataset, trainDatasetSize, testDatasetSize);
 
-
             Bagging bagger = new Bagging();
 
             NaiveBayes model = new NaiveBayes();
             bagger.setClassifier(model);
             bagger.setNumIterations(25);
-            bagger.buildClassifier(dataset);
-            model.buildClassifier(dataset);
+            bagger.buildClassifier(trainDataset);
 
             makeEvaluation(trainDataset, testDataset, bagger);
-            System.out.println("\n");
-
 
         }catch(Exception e){
             System.out.println(e);
         }
-
     }
 }

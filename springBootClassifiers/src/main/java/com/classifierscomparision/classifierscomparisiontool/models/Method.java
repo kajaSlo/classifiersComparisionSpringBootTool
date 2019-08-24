@@ -1,10 +1,15 @@
 package com.classifierscomparision.classifierscomparisiontool.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Method {
@@ -12,11 +17,8 @@ public class Method {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String methodName; //eg. decisionTree
-
     private Double result;
-
     private String splitName;
     private double F1Score;
     private double accuracy;
@@ -24,7 +26,6 @@ public class Method {
     private double specificity;
 
     //ManyToOne with Dataset
-
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
     @JoinColumn(name="dataset_id", updatable = false, nullable = false)
     @JsonIgnore
@@ -104,5 +105,4 @@ public class Method {
     public void setSpecificity(double specificity) {
         this.specificity = specificity;
     }
-
 }

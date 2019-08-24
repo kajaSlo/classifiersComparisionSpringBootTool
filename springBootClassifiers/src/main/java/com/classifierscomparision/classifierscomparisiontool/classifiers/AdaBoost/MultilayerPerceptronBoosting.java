@@ -1,6 +1,6 @@
 package com.classifierscomparision.classifierscomparisiontool.classifiers.AdaBoost;
 
-import com.classifierscomparision.classifierscomparisiontool.classifiers.crossValidation.DefaultDataSupplier;
+import com.classifierscomparision.classifierscomparisiontool.classifiers.DefaultDataSupplier;
 
 import weka.classifiers.Evaluation;
 import weka.classifiers.functions.MultilayerPerceptron;
@@ -8,9 +8,7 @@ import weka.classifiers.meta.AdaBoostM1;
 import weka.core.Debug;
 import weka.core.Instances;
 
-
 public class MultilayerPerceptronBoosting extends Thread implements DefaultDataSupplier {
-
 
     private volatile Double F1score;
     private volatile Double Accuracy;
@@ -29,18 +27,15 @@ public class MultilayerPerceptronBoosting extends Thread implements DefaultDataS
         Double sensivity = evaluation.weightedRecall();
         Double specificity = evaluation.weightedTrueNegativeRate();
 
-
         this.F1score=F1Score;
         this.Accuracy=accuracy;
         this.Sensivity=sensivity;
         this.Specificity=specificity;
     }
 
-
     public MultilayerPerceptronBoosting(String datasetDirectory) {
         this.datasetDirectory = datasetDirectory;
     }
-
 
     public Double getF1Score() {
         return F1score;
@@ -57,7 +52,6 @@ public class MultilayerPerceptronBoosting extends Thread implements DefaultDataS
 
     @Override
     public void run() {
-
         try {
 
             Instances dataset = getDataset(datasetDirectory);
@@ -82,15 +76,12 @@ public class MultilayerPerceptronBoosting extends Thread implements DefaultDataS
             
             m1.setClassifier(model);
             m1.setNumIterations(25);
-            m1.buildClassifier(dataset);
-            model.buildClassifier(dataset);
-
+            m1.buildClassifier(trainDataset);
+           
             makeEvaluation(trainDataset, testDataset,m1);
-            System.out.println("\n");
 
         }catch(Exception e){
             System.out.println(e);
         }
-
     }
 }

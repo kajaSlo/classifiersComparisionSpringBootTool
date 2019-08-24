@@ -1,16 +1,29 @@
 package com.classifierscomparision.classifierscomparisiontool.services;
 
-import com.classifierscomparision.classifierscomparisiontool.classifiers.AdaBoost.*;
-import com.classifierscomparision.classifierscomparisiontool.classifiers.bagging.*;
-import com.classifierscomparision.classifierscomparisiontool.classifiers.crossValidation.*;
-import com.classifierscomparision.classifierscomparisiontool.models.Method;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.io.File;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import com.classifierscomparision.classifierscomparisiontool.classifiers.AdaBoost.DTBoosting;
+import com.classifierscomparision.classifierscomparisiontool.classifiers.AdaBoost.KNNBoosting;
+import com.classifierscomparision.classifierscomparisiontool.classifiers.AdaBoost.MultilayerPerceptronBoosting;
+import com.classifierscomparision.classifierscomparisiontool.classifiers.AdaBoost.NaiveBayersBoosting;
+import com.classifierscomparision.classifierscomparisiontool.classifiers.AdaBoost.RandomForestBoosting;
+import com.classifierscomparision.classifierscomparisiontool.classifiers.AdaBoost.SVMBoosting;
+import com.classifierscomparision.classifierscomparisiontool.classifiers.bagging.DTBagging;
+import com.classifierscomparision.classifierscomparisiontool.classifiers.bagging.KNNBagging;
+import com.classifierscomparision.classifierscomparisiontool.classifiers.bagging.MultilayerPerceptronBagging;
+import com.classifierscomparision.classifierscomparisiontool.classifiers.bagging.NaiveBayersBagging;
+import com.classifierscomparision.classifierscomparisiontool.classifiers.bagging.RandomForestBagging;
+import com.classifierscomparision.classifierscomparisiontool.classifiers.bagging.SVMBagging;
+import com.classifierscomparision.classifierscomparisiontool.classifiers.crossValidation.DTCrossValidation;
+import com.classifierscomparision.classifierscomparisiontool.classifiers.crossValidation.KNNCrossValidation;
+import com.classifierscomparision.classifierscomparisiontool.classifiers.crossValidation.MultiLayerPerceptionCrossValidation;
+import com.classifierscomparision.classifierscomparisiontool.classifiers.crossValidation.NaiveBayersCrossValidation;
+import com.classifierscomparision.classifierscomparisiontool.classifiers.crossValidation.RandomForestCrossVal;
+import com.classifierscomparision.classifierscomparisiontool.classifiers.crossValidation.SVMCrossValidation;
+import com.classifierscomparision.classifierscomparisiontool.models.Method;
 
 @Service
 public class MethodSupplierService {
@@ -18,24 +31,18 @@ public class MethodSupplierService {
     @Autowired
     private MethodService methodService;
 
-
     public void addMethodsForDataset(Long dataset_id, String fileName) throws InterruptedException {
-
 
         String projectDir = new File(System.getProperty("user.dir")).getParentFile().toString();
 
         addMethodsCrossValidation(dataset_id, fileName, projectDir);
         addMethodsBagging(dataset_id, fileName, projectDir);
         addMethodsBoosting(dataset_id, fileName, projectDir);
-
     }
-
 
     public void addMethodsCrossValidation(Long dataset_id, String fileName, String projectDir) throws InterruptedException{
 
-
         List<Thread> threads = new ArrayList<>();
-
 
         DTCrossValidation decisionTreeClassifierCrossValidation = new DTCrossValidation(projectDir + "/datasets/CSVDatasets/" + fileName);
         threads.add(decisionTreeClassifierCrossValidation);
@@ -66,9 +73,7 @@ public class MethodSupplierService {
         addRandomForestCrossValidation(dataset_id, randomForestClassifierCrossValidation);
         addNaiveBayersCrossValidation(dataset_id, naiveBayersClassifierCrossValidation);
         addMLPCrossValidation(dataset_id, MLPClassifierCrossValidation);
-
     }
-
 
     public void addDecisionTreeCrossValidation(Long dataset_id, DTCrossValidation decisionTreeClassifierCrossValidation){
 
@@ -157,10 +162,8 @@ public class MethodSupplierService {
         randomForestMethodCrossValidation.setSpecificity(SpecificityRandomForestCrossValidation);
 
         methodService.addMethod(dataset_id, randomForestMethodCrossValidation);
-
     }
-
-    
+  
     public void addNaiveBayersCrossValidation(Long dataset_id, NaiveBayersCrossValidation naiveBayersClassifierCrossValidation){
 
         Double F1scoreNaiveBayersCrossValidation = naiveBayersClassifierCrossValidation.getF1Score();
@@ -182,7 +185,6 @@ public class MethodSupplierService {
 
         methodService.addMethod(dataset_id, naiveBayersMethodCrossValidation);
     }
-
 
     public void addMethodsBagging(Long dataset_id, String fileName, String projectDir) throws InterruptedException{
 
@@ -217,7 +219,6 @@ public class MethodSupplierService {
         addRandomForestBagging(dataset_id, randomForestClassifierBagging);
         addNaiveBayersBagging(dataset_id, naiveBayersClassifierBagging);
         addMLPBagging(dataset_id, multilayerPerceptronClassifierBagging);
-
     }
 
 
@@ -265,9 +266,7 @@ public class MethodSupplierService {
 		
 	}
 
-
 	public void addSVMBagging(Long dataset_id, SVMBagging svmClassifierBagging){
-
 
         Double F1scoreSVMBagging= svmClassifierBagging.getF1Score();
         Double AccuracySVMBagging = svmClassifierBagging.getAccuracy();
@@ -297,7 +296,6 @@ public class MethodSupplierService {
         Double SpecificityKNNBagging = knnClassifierBagging.getSpecificity();
 
         Double weightedResultKNNBagging = (F1scoreKNNBagging + AccuracyKNNBagging + SensivityKNNBagging + SpecificityKNNBagging)/4;
-
 
         Method KNNMethodBagging = new Method();
 
@@ -343,7 +341,6 @@ public class MethodSupplierService {
 
         Double weightedResultNaiveBayersBagging = (F1scoreNaiveBayersBagging + AccuracyNaiveBayersBagging + SensivityNaiveBayersBagging + SpecificityNaiveBayersBagging)/4;
 
-
         Method naiveBayersMethodBagging = new Method();
 
         naiveBayersMethodBagging.setMethodName("Naive Bayers");
@@ -357,8 +354,7 @@ public class MethodSupplierService {
         methodService.addMethod(dataset_id,naiveBayersMethodBagging);
     }
 
-    public void addMLPBagging(Long dataset_id, MultilayerPerceptronBagging multilayerPerceptronClassifierBagging){
-    	
+    public void addMLPBagging(Long dataset_id, MultilayerPerceptronBagging multilayerPerceptronClassifierBagging){	
     	
     	Double F1scoreMultilayerPerceptronBagging= multilayerPerceptronClassifierBagging.getF1Score();
         Double AccuracyMultilayerPerceptronBagging = multilayerPerceptronClassifierBagging.getAccuracy();
@@ -366,7 +362,6 @@ public class MethodSupplierService {
         Double SpecificityMultilayerPerceptronBagging = multilayerPerceptronClassifierBagging.getSpecificity();
 
         Double weightedResultMultilayerPerceptronBagging = (F1scoreMultilayerPerceptronBagging + AccuracyMultilayerPerceptronBagging + SensivityMultilayerPerceptronBagging + SpecificityMultilayerPerceptronBagging)/4;
-
 
         Method MultilayerPerceptronMethodBagging = new Method();
 
@@ -381,11 +376,9 @@ public class MethodSupplierService {
         methodService.addMethod(dataset_id,MultilayerPerceptronMethodBagging);
     }
 
-
     private void addMethodsBoosting(Long dataset_id, String fileName, String projectDir) throws InterruptedException{
 
         List<Thread> threads = new ArrayList<>();
-
 
         DTBoosting decisionTreeClassifierBoosting = new DTBoosting(projectDir + "/datasets/CSVDatasets/" + fileName);
         threads.add(decisionTreeClassifierBoosting);
@@ -419,7 +412,6 @@ public class MethodSupplierService {
     }
 
     public void addDecisionTreeBoosting(Long dataset_id, DTBoosting decisionTreeClassifierBoosting){
-
 
         Double F1scoreDTBoosting = decisionTreeClassifierBoosting.getF1Score();
         Double AccuracyDTBoosting = decisionTreeClassifierBoosting.getAccuracy();
@@ -461,7 +453,6 @@ public class MethodSupplierService {
        SVMMethodBoosting.setSpecificity(SpecificitySVMBoosting);
 
        methodService.addMethod(dataset_id, SVMMethodBoosting);
-
     }
 
    public void  addKNNBoosting(Long dataset_id, KNNBoosting knnClassifierBoosting){
@@ -472,7 +463,6 @@ public class MethodSupplierService {
        Double SpecificityKNNBoosting = knnClassifierBoosting.getSpecificity();
 
        Double weightedResultKNNBoosting = (F1scoreKNNBoosting + AccuracyKNNBoosting + SensivityKNNBoosting + SpecificityKNNBoosting)/4;
-
 
        Method KNNMethodBoosting = new Method();
 
@@ -518,7 +508,6 @@ public class MethodSupplierService {
 
         Double weightedResultNaiveBayersBoosting = (F1scoreNaiveBayersBoosting + AccuracyNaiveBayersBoosting + SensivityNaiveBayersBoosting + SpecificityNaiveBayersBoosting)/4;
 
-
         Method naiveBayersMethodBoosting = new Method();
 
         naiveBayersMethodBoosting.setMethodName("Naive Bayers");
@@ -541,7 +530,6 @@ public class MethodSupplierService {
 
         Double weightedResultMultilayerPerceptronBoosting = (F1scoreMultilayerPerceptronBoosting + AccuracyMultilayerPerceptronBoosting + SensivityMultilayerPerceptronBoosting + SpecificityMultilayerPerceptronBoosting)/4;
 
-
         Method multilayerPerceptronMethodBoosting = new Method();
 
         multilayerPerceptronMethodBoosting.setMethodName("Multilayer Perceptor");
@@ -552,7 +540,6 @@ public class MethodSupplierService {
         multilayerPerceptronMethodBoosting.setSensivity(SensivityMultilayerPerceptronBoosting);
         multilayerPerceptronMethodBoosting.setSpecificity(SpecificityMultilayerPerceptronBoosting);
 
-        methodService.addMethod(dataset_id,multilayerPerceptronMethodBoosting);
-    	
+        methodService.addMethod(dataset_id,multilayerPerceptronMethodBoosting);   	
     }
 }
