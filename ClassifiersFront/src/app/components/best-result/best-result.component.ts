@@ -30,7 +30,6 @@ export class BestResultComponent implements OnInit {
           bestResult.sensivity = bestResult.sensivity * 100;
           bestResult.specificity = bestResult.specificity * 100;
           bestResult.f1Score = bestResult.f1Score * 100;
-          bestResult.result = bestResult.result * 100;
           this.bestResult = bestResult;
         });
     });

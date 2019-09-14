@@ -31,23 +31,28 @@ public class MethodService {
     }
 
     public Iterable<Method> findDatasetById(Long id){
-        return methodRepository.findAllByDataset_IdOrderByResultDesc(id);
+        return methodRepository.findAllByDataset_IdOrderByF1ScoreDesc(id);
     }
 
     public Iterable<Method> findCrossValidationMethodsByDatasetId(Long id){
-        return methodRepository.findAllByDataset_IdAndSplitNameEqualsOrderByResultDesc(id, "CrossValidation");
+        return methodRepository.findAllByDataset_IdAndSplitNameEqualsOrderByF1ScoreDesc(id, "CrossValidation");
     }
 
     public Iterable<Method> findBaggingMethodsByDatasetId(Long id){
-        return methodRepository.findAllByDataset_IdAndSplitNameEqualsOrderByResultDesc(id, "Bagging");
+        return methodRepository.findAllByDataset_IdAndSplitNameEqualsOrderByF1ScoreDesc(id, "Bagging");
     }
 
     public Iterable<Method> findBoostingMethodsByDatasetId(Long id){
-        return methodRepository.findAllByDataset_IdAndSplitNameEqualsOrderByResultDesc(id, "Boosting");
+        return methodRepository.findAllByDataset_IdAndSplitNameEqualsOrderByF1ScoreDesc(id, "Boosting");
     }
     
-    public Method findMethodWithTheBestResultByDatasetId(Long id) {
+//    public Method findMethodWithTheBestResultByDatasetId(Long id) {
+//    	
+//    	return methodRepository.findFirstByDataset_IdOrderByResultDesc(id);
+//    }
+    
+    public Method findMethodWithTheBestF1ResultByDatasetId(Long id) {
     	
-    	return methodRepository.findFirstByDataset_IdOrderByResultDesc(id);
+    	return methodRepository.findFirstByDataset_IdOrderByF1ScoreDesc(id);
     }
 }

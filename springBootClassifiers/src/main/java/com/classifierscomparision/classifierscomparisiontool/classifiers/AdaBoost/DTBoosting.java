@@ -58,7 +58,7 @@ public class DTBoosting extends Thread implements DefaultDataSupplier {
 
             dataset.setClassIndex(dataset.numAttributes()-1);
             
-            int trainDatasetSize = (int) Math.round(dataset.numInstances() * 0.7);
+            int trainDatasetSize = (int) Math.round(dataset.numInstances() * 0.9);
             int testDatasetSize = dataset.numInstances() - trainDatasetSize;
 
             dataset.randomize(new Debug.Random(1));

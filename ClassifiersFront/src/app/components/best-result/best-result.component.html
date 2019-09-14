@@ -12,7 +12,6 @@
     <th>Sensivity:</th>
     <th>Specificity:</th>
     <th>F1Score:</th>
-    <th>Average of all results:</th>
     <th>Split method used:</th>
   </tr>
   <tr>
@@ -21,7 +20,6 @@
     <td>{{ bestResult?.sensivity | number: "1.2-2" }}%</td>
     <td>{{ bestResult?.specificity | number: "1.2-2" }}%</td>
     <td>{{ bestResult?.f1Score | number: "1.2-2" }}%</td>
-    <td>{{ bestResult?.result | number: "1.2-2" }}%</td>
     <td>{{ bestResult?.splitName }}</td>
   </tr>
 </table>

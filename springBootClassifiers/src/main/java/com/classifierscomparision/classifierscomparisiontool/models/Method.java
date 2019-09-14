@@ -18,9 +18,8 @@ public class Method {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String methodName; //eg. decisionTree
-    private Double result;
     private String splitName;
-    private double F1Score;
+    private double f1Score;
     private double accuracy;
     private double sensivity;
     private double specificity;
@@ -50,14 +49,6 @@ public class Method {
         this.methodName = methodName;
     }
 
-    public Double getResult() {
-        return result;
-    }
-
-    public void setResult(Double result) {
-        this.result = result;
-    }
-
     public Dataset getDataset() {
         return dataset;
     }
@@ -75,11 +66,11 @@ public class Method {
     }
 
     public double getF1Score() {
-        return F1Score;
+        return f1Score;
     }
 
     public void setF1Score(double f1Score) {
-        F1Score = f1Score;
+        this.f1Score = f1Score;
     }
 
     public double getAccuracy() {
