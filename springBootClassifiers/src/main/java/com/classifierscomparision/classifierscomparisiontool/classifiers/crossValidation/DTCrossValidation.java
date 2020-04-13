@@ -1,9 +1,7 @@
 package com.classifierscomparision.classifierscomparisiontool.classifiers.crossValidation;
 
 import java.util.Random;
-
 import com.classifierscomparision.classifierscomparisiontool.classifiers.DefaultDataSupplier;
-
 import weka.classifiers.Evaluation;
 import weka.classifiers.trees.J48;
 import weka.core.Instances;

@@ -24,7 +24,9 @@ import com.classifierscomparision.classifierscomparisiontool.classifiers.crossVa
 import com.classifierscomparision.classifierscomparisiontool.classifiers.crossValidation.RandomForestCrossVal;
 import com.classifierscomparision.classifierscomparisiontool.classifiers.crossValidation.SVMCrossValidation;
 import com.classifierscomparision.classifierscomparisiontool.models.Method;
+import javax.transaction.Transactional;
 
+@Transactional
 @Service
 public class MethodSupplierService {
 

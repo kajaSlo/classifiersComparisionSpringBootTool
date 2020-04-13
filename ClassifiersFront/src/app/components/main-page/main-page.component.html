@@ -1,17 +1,14 @@
 <div class="alert alert-success" *ngIf="successMsg">
   <p>Dataset deleted.</p>
 </div>
-
 <div class="alert alert-danger" *ngIf="errorMsg">
   <p>Error deleting dataset.</p>
 </div>
-
 <app-upload-component></app-upload-component>
 <br />
 <br />
 <h1>All datasets</h1>
 <br />
-
 <table class="table">
   <tr bgcolor="#f9f9f9">
     <th>Dataset name</th>
@@ -21,7 +18,6 @@
     <th>Get best result</th>
     <th>Delete dataset</th>
   </tr>
-
   <tr *ngFor="let dataset of datasets?.value">
     <td>
       {{ dataset.datasetName }}

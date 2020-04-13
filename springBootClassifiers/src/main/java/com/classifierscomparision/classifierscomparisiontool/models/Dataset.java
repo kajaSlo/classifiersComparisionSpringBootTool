@@ -15,12 +15,10 @@ public class Dataset {
     @NotBlank(message = "Dataset name is required")
     private String datasetName;
 
-    //OneToMany with Method
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "dataset")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "dataset")
     private List<Method> datasetMethods = new ArrayList<>();
 
-    public Dataset() {
-    }
+    public Dataset() { }
 
     public Dataset(@NotBlank(message = "Dataset name is required") String datasetName) {
         this.datasetName = datasetName;

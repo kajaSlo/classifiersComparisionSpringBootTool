@@ -1,7 +1,6 @@
 package com.classifierscomparision.classifierscomparisiontool.classifiers.bagging;
 
 import com.classifierscomparision.classifierscomparisiontool.classifiers.DefaultDataSupplier;
-
 import weka.classifiers.Evaluation;
 import weka.classifiers.meta.Bagging;
 import weka.classifiers.trees.J48;

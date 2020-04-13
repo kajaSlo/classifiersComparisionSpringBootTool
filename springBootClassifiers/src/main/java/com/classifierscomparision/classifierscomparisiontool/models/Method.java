@@ -8,7 +8,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -24,14 +23,12 @@ public class Method {
     private double sensivity;
     private double specificity;
 
-    //ManyToOne with Dataset
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     @JoinColumn(name="dataset_id", updatable = false, nullable = false)
     @JsonIgnore
     private Dataset dataset;
 
-    public Method() {
-    }
+    public Method() { }
 
     public Long getId() {
         return id;

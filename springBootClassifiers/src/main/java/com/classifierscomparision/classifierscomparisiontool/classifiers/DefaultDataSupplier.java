@@ -1,8 +1,6 @@
 package com.classifierscomparision.classifierscomparisiontool.classifiers;
 
 import weka.core.Instances;
-import weka.core.converters.ConverterUtils;
-import weka.core.Instances;
 import weka.core.converters.CSVLoader;
 import java.io.File;
 

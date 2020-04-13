@@ -8,7 +8,9 @@ import com.classifierscomparision.classifierscomparisiontool.models.Dataset;
 import com.classifierscomparision.classifierscomparisiontool.models.Method;
 import com.classifierscomparision.classifierscomparisiontool.repositories.DatasetRepository;
 import com.classifierscomparision.classifierscomparisiontool.repositories.MethodRepository;
+import javax.transaction.Transactional;
 
+@Transactional
 @Service
 public class MethodService {
 
@@ -45,11 +47,6 @@ public class MethodService {
     public Iterable<Method> findBoostingMethodsByDatasetId(Long id){
         return methodRepository.findAllByDataset_IdAndSplitNameEqualsOrderByF1ScoreDesc(id, "Boosting");
     }
-    
-//    public Method findMethodWithTheBestResultByDatasetId(Long id) {
-//    	
-//    	return methodRepository.findFirstByDataset_IdOrderByResultDesc(id);
-//    }
     
     public Method findMethodWithTheBestF1ResultByDatasetId(Long id) {
     	

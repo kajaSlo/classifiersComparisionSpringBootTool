@@ -13,5 +13,4 @@ public interface MethodRepository extends CrudRepository<Method,Long>{
     List<Method> findAllByDataset_IdAndSplitNameEqualsOrderByF1ScoreDesc(Long id,String splitName);
     
     Method findFirstByDataset_IdOrderByF1ScoreDesc(Long id);
-   
 }

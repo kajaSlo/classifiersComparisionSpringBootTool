@@ -4,7 +4,6 @@ import com.classifierscomparision.classifierscomparisiontool.classifiers.Default
 import weka.classifiers.Evaluation;
 import weka.classifiers.lazy.IBk;
 import weka.core.Instances;
-
 import java.util.Random;
 
 public class KNNCrossValidation extends Thread implements DefaultDataSupplier {

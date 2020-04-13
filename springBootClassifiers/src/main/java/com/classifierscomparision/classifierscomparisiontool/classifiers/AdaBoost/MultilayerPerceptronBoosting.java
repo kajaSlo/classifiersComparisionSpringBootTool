@@ -1,7 +1,6 @@
 package com.classifierscomparision.classifierscomparisiontool.classifiers.AdaBoost;
 
 import com.classifierscomparision.classifierscomparisiontool.classifiers.DefaultDataSupplier;
-
 import weka.classifiers.Evaluation;
 import weka.classifiers.functions.MultilayerPerceptron;
 import weka.classifiers.meta.AdaBoostM1;

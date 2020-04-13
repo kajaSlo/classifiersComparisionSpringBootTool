@@ -1,7 +1,6 @@
 package com.classifierscomparision.classifierscomparisiontool.controllers;
 
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -63,7 +62,6 @@ public class MethodController {
     @GetMapping("/methods/bestResult/{dataset_id}")
     public Method getDatasetMethodWithBestResult(@PathVariable Long dataset_id){
 
-       // return methodService.findMethodWithTheBestResultByDatasetId(dataset_id);
     	return methodService.findMethodWithTheBestF1ResultByDatasetId(dataset_id);
     }
 }

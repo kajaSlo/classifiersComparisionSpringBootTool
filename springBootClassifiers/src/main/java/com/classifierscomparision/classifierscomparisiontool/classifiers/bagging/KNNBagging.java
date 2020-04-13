@@ -3,7 +3,6 @@ package com.classifierscomparision.classifierscomparisiontool.classifiers.baggin
 import com.classifierscomparision.classifierscomparisiontool.classifiers.DefaultDataSupplier;
 import weka.classifiers.Evaluation;
 import weka.classifiers.lazy.IBk;
-import weka.classifiers.meta.AdaBoostM1;
 import weka.classifiers.meta.Bagging;
 import weka.core.Debug;
 import weka.core.Instances;
